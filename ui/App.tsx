@@ -50,13 +50,13 @@ function App() {
           <div className="flex flex-col items-center justify-center h-full gap-3 text-overlay0 text-center">
             <BookMarked size={56} strokeWidth={1.2} style={{ opacity: 0.25 }} />
             <h3 className="text-base font-medium text-subtext0">No repositories yet</h3>
-            <p className="text-[13px] max-w-[280px] leading-[1.6]">Add a repository to get started.</p>
+            <p className="text-sm max-w-xs">Add a repository to get started.</p>
             <button className="btn btn-primary" onClick={() => setShowModal(true)}>
               Add repository
             </button>
           </div>
         ) : (
-          <div className="flex flex-col gap-3 max-w-[1100px] mx-auto">
+          <div className="flex flex-col gap-4 max-w-6xl mx-auto">
             {repos.map((r) => (
               <RepoRow key={r.path} repo={r} />
             ))}

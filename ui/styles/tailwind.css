@@ -107,7 +107,7 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-surface1 rounded-[3px];
+    @apply bg-surface1 rounded-sm;
   }
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-surface2;
@@ -117,7 +117,7 @@
 @layer components {
   /* Buttons */
   .btn {
-    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-surface1 bg-surface0 text-text font-mono text-xs cursor-pointer transition-all duration-150 whitespace-nowrap;
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-md border border-surface1 bg-surface0 text-text font-mono text-xs cursor-pointer transition-all duration-150 whitespace-nowrap;
   }
   .btn:hover:not(:disabled) {
     @apply bg-surface1 border-surface2;
@@ -153,7 +153,7 @@
   }
 
   .btn-icon {
-    @apply p-1.5 rounded-md border border-surface1 bg-transparent text-subtext0 cursor-pointer transition-all duration-150 flex items-center justify-center;
+    @apply p-2 rounded-md border border-surface1 bg-transparent text-subtext0 cursor-pointer transition-all duration-150 flex items-center justify-center;
   }
   .btn-icon:hover {
     @apply bg-surface0 text-text;
@@ -161,7 +161,7 @@
 
   /* Badges */
   .badge {
-    @apply text-[10px] font-mono px-1.5 py-[1px] rounded font-semibold;
+    @apply text-xs font-mono px-2 py-1 rounded font-semibold;
   }
   .badge-clean {
     @apply bg-green/20 text-green;
@@ -187,11 +187,11 @@
 
   /* Forms */
   .form-label {
-    @apply text-xs text-subtext0 mb-1.5 block font-mono;
+    @apply text-xs text-subtext0 mb-2 block font-mono;
   }
   
   .form-input {
-    @apply w-full bg-base border border-surface1 rounded-lg px-3.5 py-2 text-text font-mono text-[13px] outline-none transition-colors duration-150;
+    @apply w-full bg-base border border-surface1 rounded-lg px-4 py-2 text-text font-mono text-sm outline-none transition-colors duration-150;
   }
   .form-input:focus {
     @apply border-mauve;
@@ -201,7 +201,7 @@
   }
 
   .commit-input {
-    @apply flex-1 bg-base border border-surface1 rounded-lg px-3.5 py-2 text-text font-sans text-[13px] outline-none transition-colors duration-150;
+    @apply flex-1 bg-base border border-surface1 rounded-lg px-4 py-2 text-text font-sans text-sm outline-none transition-colors duration-150;
   }
   .commit-input:focus {
     @apply border-mauve;
@@ -212,19 +212,19 @@
 
   /* Modal */
   .modal {
-    @apply bg-mantle border border-surface1 rounded-xl p-6 w-[480px] max-w-[90vw] shadow-[0_20px_60px_rgba(0,0,0,0.4)];
+    @apply flex flex-col gap-4 bg-mantle border border-surface1 rounded-xl p-6 w-full max-w-lg shadow-2xl;
   }
 
   /* Toast */
   .toast {
-    @apply bg-mantle border border-surface1 rounded-lg py-3 px-4 text-[13px] flex items-center gap-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.25)] max-w-[320px];
+    @apply bg-mantle border border-surface1 rounded-lg py-4 px-4 text-sm flex items-center gap-2 shadow-lg max-w-xs;
     animation: slideIn 0.2s ease;
   }
   .toast-ok {
-    @apply border-l-[3px] border-l-green;
+    @apply border-l-4 border-l-green;
   }
   .toast-err {
-    @apply border-l-[3px] border-l-red;
+    @apply border-l-4 border-l-red;
   }
 
   /* File Status */
@@ -236,7 +236,7 @@
 
   /* Spinner */
   .spinner {
-    @apply w-3.5 h-3.5 border-2 border-transparent border-t-current rounded-full inline-block;
+    @apply w-4 h-4 border-2 border-transparent border-t-current rounded-full inline-block;
     animation: spin 0.6s linear infinite;
   }
   .spin {
