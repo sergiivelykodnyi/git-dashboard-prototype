@@ -23,7 +23,7 @@ export function ToastContainer() {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', bottom: 20, right: 20, display: 'flex', flexDirection: 'column', gap: 8, zIndex: 999 }}>
+    <div className="fixed bottom-5 right-5 flex flex-col gap-2 z-[999]">
       {toasts.map((t) => (
         <div key={t.id} className={`toast toast-${t.type}`}>
           {t.type === 'ok' ? <CheckCircle size={14} /> : <XCircle size={14} />}

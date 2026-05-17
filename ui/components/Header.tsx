@@ -19,16 +19,16 @@ export function Header({
   const { lastRefresh } = useAppStore();
 
   return (
-    <header>
-      <div className="header-left">
-        <div className="logo">
+    <header className="bg-mantle border-b border-surface0 px-6 h-14 flex items-center justify-between sticky top-0 z-[100] shrink-0">
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 font-mono font-semibold text-[15px] text-mauve tracking-[-0.3px]">
           <GitBranch size={18} />
           git dashboard
         </div>
       </div>
-      <div className="header-right">
+      <div className="flex items-center gap-2.5">
         {lastRefresh && (
-          <span className="refresh-badge">
+          <span className="text-[10px] font-mono text-overlay0 px-2 py-0.5">
             Updated {lastRefresh.toLocaleTimeString()}
           </span>
         )}

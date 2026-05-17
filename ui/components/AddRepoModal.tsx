@@ -35,10 +35,10 @@ export function AddRepoModal({ onClose, onAdded }: Props) {
   };
 
   return (
-    <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-[4px] z-[200] flex items-center justify-center" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="modal">
-        <h3>Add Repository</h3>
-        <div className="form-group">
+        <h3 className="text-base font-semibold mb-4 text-text">Add Repository</h3>
+        <div className="mb-3.5">
           <label className="form-label">Repository path (absolute)</label>
           <input
             className="form-input"
@@ -48,8 +48,8 @@ export function AddRepoModal({ onClose, onAdded }: Props) {
             autoFocus
           />
         </div>
-        <div className="divider" />
-        <div className="form-group">
+        <div className="h-px bg-surface0 my-2" />
+        <div className="mb-3.5">
           <label className="form-label">Or scan a directory for git repos</label>
           <input
             className="form-input"
@@ -58,7 +58,7 @@ export function AddRepoModal({ onClose, onAdded }: Props) {
             placeholder="/Users/you/projects"
           />
         </div>
-        <div className="modal-actions">
+        <div className="flex gap-2 justify-end mt-5">
           <button className="btn" onClick={onClose}>Cancel</button>
           <button className="btn btn-primary" onClick={handleAdd} disabled={loading}>
             {loading ? <span className="spinner" /> : null} Add

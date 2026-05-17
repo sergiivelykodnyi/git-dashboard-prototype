@@ -1,0 +1,262 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Mona+Sans:wght@300;400;500;600&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Mona Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-base: var(--base);
+  --color-mantle: var(--mantle);
+  --color-crust: var(--crust);
+  --color-surface0: var(--surface0);
+  --color-surface1: var(--surface1);
+  --color-surface2: var(--surface2);
+  --color-overlay0: var(--overlay0);
+  --color-overlay1: var(--overlay1);
+  --color-overlay2: var(--overlay2);
+  --color-subtext0: var(--subtext0);
+  --color-subtext1: var(--subtext1);
+  --color-text: var(--text);
+  --color-lavender: var(--lavender);
+  --color-blue: var(--blue);
+  --color-sapphire: var(--sapphire);
+  --color-sky: var(--sky);
+  --color-teal: var(--teal);
+  --color-green: var(--green);
+  --color-yellow: var(--yellow);
+  --color-peach: var(--peach);
+  --color-maroon: var(--maroon);
+  --color-red: var(--red);
+  --color-mauve: var(--mauve);
+  --color-pink: var(--pink);
+  --color-flamingo: var(--flamingo);
+  --color-rosewater: var(--rosewater);
+}
+
+@layer base {
+  [data-theme="mocha"] {
+    --base: #1e1e2e;
+    --mantle: #181825;
+    --crust: #11111b;
+    --surface0: #313244;
+    --surface1: #45475a;
+    --surface2: #585b70;
+    --overlay0: #6c7086;
+    --overlay1: #7f849c;
+    --overlay2: #9399b2;
+    --subtext0: #a6adc8;
+    --subtext1: #bac2de;
+    --text: #cdd6f4;
+    --lavender: #b4befe;
+    --blue: #89b4fa;
+    --sapphire: #74c7ec;
+    --sky: #89dceb;
+    --teal: #94e2d5;
+    --green: #a6e3a1;
+    --yellow: #f9e2af;
+    --peach: #fab387;
+    --maroon: #eba0ac;
+    --red: #f38ba8;
+    --mauve: #cba6f7;
+    --pink: #f5c2e7;
+    --flamingo: #f2cdcd;
+    --rosewater: #f5e0dc;
+  }
+
+  [data-theme="latte"] {
+    --base: #eff1f5;
+    --mantle: #e6e9ef;
+    --crust: #dce0e8;
+    --surface0: #ccd0da;
+    --surface1: #bcc0cc;
+    --surface2: #acb0be;
+    --overlay0: #9ca0b0;
+    --overlay1: #8c8fa1;
+    --overlay2: #7c7f93;
+    --subtext0: #6c6f85;
+    --subtext1: #5c5f77;
+    --text: #4c4f69;
+    --lavender: #7287fd;
+    --blue: #1e66f5;
+    --sapphire: #209fb5;
+    --sky: #04a5e5;
+    --teal: #179299;
+    --green: #40a02b;
+    --yellow: #df8e1d;
+    --peach: #fe640b;
+    --maroon: #e64553;
+    --red: #d20f39;
+    --mauve: #8839ef;
+    --pink: #ea76cb;
+    --flamingo: #dd7878;
+    --rosewater: #dc8a78;
+  }
+
+  body {
+    @apply bg-base text-text min-h-screen flex flex-col font-sans transition-colors duration-250;
+  }
+
+  #root {
+    @apply flex flex-col min-h-screen;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface1 rounded-[3px];
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-surface2;
+  }
+}
+
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-surface1 bg-surface0 text-text font-mono text-xs cursor-pointer transition-all duration-150 whitespace-nowrap;
+  }
+  .btn:hover:not(:disabled) {
+    @apply bg-surface1 border-surface2;
+  }
+  .btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-mauve border-mauve text-base font-semibold;
+  }
+  .btn-primary:hover:not(:disabled) {
+    @apply opacity-85 bg-mauve;
+  }
+
+  .btn-green {
+    @apply bg-green border-green text-base font-semibold;
+  }
+  .btn-blue {
+    @apply bg-blue border-blue text-base font-semibold;
+  }
+  .btn-peach {
+    @apply bg-peach border-peach text-base font-semibold;
+  }
+  .btn-green:hover:not(:disabled) {
+    @apply opacity-85 bg-green;
+  }
+  .btn-blue:hover:not(:disabled) {
+    @apply opacity-85 bg-blue;
+  }
+  .btn-peach:hover:not(:disabled) {
+    @apply opacity-85 bg-peach;
+  }
+
+  .btn-icon {
+    @apply p-1.5 rounded-md border border-surface1 bg-transparent text-subtext0 cursor-pointer transition-all duration-150 flex items-center justify-center;
+  }
+  .btn-icon:hover {
+    @apply bg-surface0 text-text;
+  }
+
+  /* Badges */
+  .badge {
+    @apply text-[10px] font-mono px-1.5 py-[1px] rounded font-semibold;
+  }
+  .badge-clean {
+    @apply bg-green/20 text-green;
+  }
+  .badge-staged {
+    @apply bg-green/20 text-green;
+  }
+  .badge-changed {
+    @apply bg-yellow/20 text-yellow;
+  }
+  .badge-ahead {
+    @apply bg-blue/20 text-blue;
+  }
+  .badge-behind {
+    @apply bg-peach/20 text-peach;
+  }
+  .badge-stash {
+    @apply bg-teal/20 text-teal;
+  }
+  .badge-error {
+    @apply bg-red/20 text-red;
+  }
+
+  /* Forms */
+  .form-label {
+    @apply text-xs text-subtext0 mb-1.5 block font-mono;
+  }
+  
+  .form-input {
+    @apply w-full bg-base border border-surface1 rounded-lg px-3.5 py-2 text-text font-mono text-[13px] outline-none transition-colors duration-150;
+  }
+  .form-input:focus {
+    @apply border-mauve;
+  }
+  .form-input::placeholder {
+    @apply text-overlay0;
+  }
+
+  .commit-input {
+    @apply flex-1 bg-base border border-surface1 rounded-lg px-3.5 py-2 text-text font-sans text-[13px] outline-none transition-colors duration-150;
+  }
+  .commit-input:focus {
+    @apply border-mauve;
+  }
+  .commit-input::placeholder {
+    @apply text-overlay0;
+  }
+
+  /* Modal */
+  .modal {
+    @apply bg-mantle border border-surface1 rounded-xl p-6 w-[480px] max-w-[90vw] shadow-[0_20px_60px_rgba(0,0,0,0.4)];
+  }
+
+  /* Toast */
+  .toast {
+    @apply bg-mantle border border-surface1 rounded-lg py-3 px-4 text-[13px] flex items-center gap-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.25)] max-w-[320px];
+    animation: slideIn 0.2s ease;
+  }
+  .toast-ok {
+    @apply border-l-[3px] border-l-green;
+  }
+  .toast-err {
+    @apply border-l-[3px] border-l-red;
+  }
+
+  /* File Status */
+  .fs-M { @apply bg-yellow/20 text-yellow; }
+  .fs-A { @apply bg-green/20 text-green; }
+  .fs-D { @apply bg-red/20 text-red; }
+  .fs-R { @apply bg-blue/20 text-blue; }
+  .fs-unknown { @apply bg-overlay0/20 text-overlay0; }
+
+  /* Spinner */
+  .spinner {
+    @apply w-3.5 h-3.5 border-2 border-transparent border-t-current rounded-full inline-block;
+    animation: spin 0.6s linear infinite;
+  }
+  .spin {
+    animation: spin 0.6s linear infinite;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

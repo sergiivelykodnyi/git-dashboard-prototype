@@ -33,21 +33,21 @@ export function RepoRow({ repo }: Props) {
   };
 
   return (
-    <div className="repo-row">
-      <div className="repo-row-left">
-        <div className="detail-icon">
+    <div className="flex flex-wrap sm:flex-nowrap items-center gap-4 bg-mantle border border-surface0 rounded-[10px] py-3.5 px-[18px]">
+      <div className="flex items-center gap-3 min-w-[180px]">
+        <div className="w-11 h-11 bg-mauve/15 rounded-[10px] flex items-center justify-center text-mauve shrink-0">
           <BookMarked size={18} />
         </div>
         <div>
-          <div className="repo-row-name">{repo.name}</div>
-          <div className="repo-row-branch">
+          <div className="text-base font-semibold text-text font-mono">{repo.name}</div>
+          <div className="text-[11px] text-mauve font-mono flex items-center gap-1 mt-[3px]">
             <GitBranch size={10} />
             {repo.branch || "?"}
           </div>
         </div>
       </div>
 
-      <div className="repo-row-badges">
+      <div className="flex gap-1.5 flex-1">
         {repo.error && <span className="badge badge-error">err</span>}
         {!repo.error && repo.isClean && !repo.ahead && !repo.behind && (
           <span className="badge badge-clean">✓</span>
@@ -69,7 +69,7 @@ export function RepoRow({ repo }: Props) {
         )}
       </div>
 
-      <div className="repo-row-actions">
+      <div className="flex gap-2 shrink-0 flex-wrap sm:flex-nowrap">
         <button
           className="btn btn-blue"
           onClick={() => handleGit("fetch")}
