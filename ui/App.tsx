@@ -45,21 +45,23 @@ function App() {
         fetching={fetching}
         onAddRepo={() => setShowModal(true)}
       />
-      <main className="h-[calc(100vh-56px)] flex-1 overflow-y-auto p-6">
+      <main className="p-6">
         {repos.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center gap-3 text-center text-overlay0">
-            <Icon name="bookmarks" size={56} style={{ opacity: 0.25 }} />
-            <h3 className="font-medium text-subtext0">No repositories yet</h3>
-            <p className="max-w-xs text-sm">Add a repository to get started.</p>
+          <div className="mx-auto max-w-7xl pt-16 text-center text-overlay0">
+            <Icon name="bookmarks" size={56} />
+            <h2 className="mt-2 text-2xl font-medium text-subtext0">
+              No repositories yet
+            </h2>
+            <p className="mt-1">Add a repository to get started.</p>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary mt-5"
               onClick={() => setShowModal(true)}
             >
               Add repository
             </button>
           </div>
         ) : (
-          <div className="mx-auto flex max-w-6xl flex-col gap-4">
+          <div className="mx-auto max-w-7xl space-y-6">
             {repos.map((r) => (
               <RepoRow key={r.path} repo={r} />
             ))}

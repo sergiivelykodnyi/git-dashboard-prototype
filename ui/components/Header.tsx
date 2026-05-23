@@ -26,46 +26,52 @@ export function Header(props: Readonly<Props>) {
   return (
     <header
       className={clsx(
-        "sticky top-0 z-50 flex h-14 shrink-0 items-center justify-between border-b border-surface0 bg-mantle px-6",
+        "sticky top-0 z-50 h-14 border-b border-surface0 bg-mantle px-6",
         className,
       )}
       {...rest}
     >
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2 font-semibold tracking-tight text-mauve">
-          <Icon name="fork_right" size={24} />
-          git dashboard
+      <div className="mx-auto flex h-full max-w-7xl items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 font-semibold tracking-tight text-mauve">
+            <Icon name="fork_right" size={24} />
+            git dashboard
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-2">
-        {lastRefresh && (
-          <span className="px-2 py-1 text-xs text-overlay0">
-            Updated {lastRefresh.toLocaleTimeString()}
-          </span>
-        )}
-        <button className="btn" onClick={onRefresh} disabled={refreshing}>
-          {refreshing ? (
-            <span className="spinner" />
-          ) : (
-            <Icon name="sync" size={16} className={refreshing ? "spin" : ""} />
-          )}{" "}
-          Refresh all
-        </button>
-        <button
-          className="btn btn-blue"
-          onClick={onFetchAll}
-          disabled={fetching}
-        >
-          {fetching ? (
-            <span className="spinner" />
-          ) : (
-            <Icon name="cloud_download" size={16} />
-          )}{" "}
-          Fetch all
-        </button>
-        <button className="btn btn-primary" onClick={onAddRepo}>
-          <Icon name="add" size={16} /> Add repo
-        </button>
+        <div className="flex items-center gap-2">
+          {lastRefresh && (
+            <span className="px-2 py-1 text-xs text-overlay0">
+              Updated {lastRefresh.toLocaleTimeString()}
+            </span>
+          )}
+          <button className="btn" onClick={onRefresh} disabled={refreshing}>
+            {refreshing ? (
+              <span className="spinner" />
+            ) : (
+              <Icon
+                name="sync"
+                size={16}
+                className={refreshing ? "spin" : ""}
+              />
+            )}{" "}
+            Refresh all
+          </button>
+          <button
+            className="btn btn-blue"
+            onClick={onFetchAll}
+            disabled={fetching}
+          >
+            {fetching ? (
+              <span className="spinner" />
+            ) : (
+              <Icon name="cloud_download" size={16} />
+            )}{" "}
+            Fetch all
+          </button>
+          <button className="btn btn-primary" onClick={onAddRepo}>
+            <Icon name="add" size={16} /> Add repo
+          </button>
+        </div>
       </div>
     </header>
   );
