@@ -28,7 +28,9 @@ export function saveConfig(config: Config): void {
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
 }
 
-export function resolveRepoPath(inputPath: string | null | undefined): string | null {
+export function resolveRepoPath(
+  inputPath: string | null | undefined,
+): string | null {
   if (!inputPath || typeof inputPath !== "string") return null;
   const resolved = path.resolve(inputPath);
   try {

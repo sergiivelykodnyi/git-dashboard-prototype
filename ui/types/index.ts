@@ -28,7 +28,7 @@ export interface Repo {
   error?: string;
 }
 
-export type GitAction = 'fetch' | 'pull' | 'push' | 'commit';
+export type GitAction = "fetch" | "pull" | "push" | "commit";
 
 export interface GitActionResult {
   success: boolean;
@@ -39,7 +39,6 @@ export interface GitActionResult {
 export interface LogEntry {
   id: number;
   msg: string;
-  type: 'ok' | 'err' | 'info';
+  type: "ok" | "err" | "info";
   time: string;
 }
-

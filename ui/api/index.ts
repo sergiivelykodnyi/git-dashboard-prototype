@@ -1,7 +1,10 @@
 import axios from "axios";
 import type { Repo, GitAction, GitActionResult } from "../types";
 
-const api = axios.create({ baseURL: "http://localhost:5800/api", timeout: 30000 });
+const api = axios.create({
+  baseURL: "http://localhost:5800/api",
+  timeout: 30000,
+});
 
 export const fetchRepos = (): Promise<Repo[]> =>
   api.get("/repos").then((r) => r.data);

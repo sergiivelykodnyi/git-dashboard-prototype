@@ -45,16 +45,16 @@ export async function getRepoStatus(repoPath: string): Promise<RepoStatus> {
 
     const lastCommit = log.latest
       ? {
-        hash: log.latest.hash.substring(0, 7),
-        message: log.latest.message,
-        author: log.latest.author_name,
-        date: log.latest.date,
-      }
+          hash: log.latest.hash.substring(0, 7),
+          message: log.latest.message,
+          author: log.latest.author_name,
+          date: log.latest.date,
+        }
       : null;
 
     const staged = status.staged.length;
     const changed = status.files.filter(
-      (f) => f.working_dir !== " " && f.working_dir !== ""
+      (f) => f.working_dir !== " " && f.working_dir !== "",
     ).length;
     const stash = stashList.all.length;
 
@@ -99,7 +99,7 @@ export async function getRepoStatus(repoPath: string): Promise<RepoStatus> {
 export async function executeGitOperation(
   resolved: string,
   action: string,
-  message?: string
+  message?: string,
 ): Promise<{ success: boolean; result: string; status?: RepoStatus }> {
   const git = simpleGit(resolved);
   let result: string;

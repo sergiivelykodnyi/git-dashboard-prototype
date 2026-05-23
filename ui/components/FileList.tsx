@@ -26,12 +26,12 @@ export function FileList(props: Readonly<Props>) {
   return (
     <div
       className={clsx(
-        "bg-mantle border border-surface0 rounded-xl py-4 px-6",
+        "rounded-xl border border-surface0 bg-mantle px-6 py-4",
         className,
       )}
       {...rest}
     >
-      <div className="text-xs font-semibold tracking-widest uppercase text-overlay1 mb-4">
+      <div className="mb-4 text-xs font-semibold tracking-widest text-overlay1 uppercase">
         Changed Files ({files.length})
       </div>
       <div className="flex flex-col gap-1">
@@ -40,11 +40,11 @@ export function FileList(props: Readonly<Props>) {
           return (
             <div
               key={f.path}
-              className="flex items-center gap-2 py-2 px-2 rounded-md bg-base border border-surface0 font-mono text-xs"
+              className="bg-base flex items-center gap-2 rounded-md border border-surface0 px-2 py-2 font-mono text-xs"
             >
               <div
                 className={clsx(
-                  "w-4 h-4 rounded flex items-center justify-center text-xs font-bold shrink-0",
+                  "flex h-4 w-4 shrink-0 items-center justify-center rounded text-xs font-bold",
                   statusClass[s] ?? "fs-unknown",
                 )}
               >

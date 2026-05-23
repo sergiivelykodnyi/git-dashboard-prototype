@@ -11,5 +11,7 @@ app.use("/api", apiRouter);
 
 const PORT = process.env.PORT || 5800;
 app.listen(PORT, () => {
-  console.log(`\n🚀 Git Dashboard Server running at http://localhost:${PORT}\n`);
+  console.log(
+    `\n🚀 Git Dashboard Server running at http://localhost:${PORT}\n`,
+  );
 });

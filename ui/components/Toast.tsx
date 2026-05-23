@@ -29,7 +29,7 @@ export function ToastContainer(props: ComponentProps<"div">) {
   return (
     <div
       className={clsx(
-        "fixed bottom-6 right-6 flex flex-col gap-2 z-50",
+        "fixed right-6 bottom-6 z-50 flex flex-col gap-2",
         className,
       )}
       {...rest}

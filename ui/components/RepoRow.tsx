@@ -31,27 +31,27 @@ export function RepoRow(props: Readonly<Props>) {
   return (
     <div
       className={clsx(
-        "flex flex-wrap sm:flex-nowrap items-center gap-4 bg-mantle border border-surface0 rounded-xl py-4 px-4",
+        "flex flex-wrap items-center gap-4 rounded-xl border border-surface0 bg-mantle px-4 py-4 sm:flex-nowrap",
         className,
       )}
       {...rest}
     >
-      <div className="flex items-center gap-4 min-w-48">
-        <div className="w-12 h-12 bg-mauve/15 rounded-xl flex items-center justify-center text-mauve shrink-0">
+      <div className="flex min-w-48 items-center gap-4">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-mauve/15 text-mauve">
           <Icon name="folder_code" size={24} />
         </div>
         <div>
           <div className="text-base font-semibold text-foreground">
             {repo.name}
           </div>
-          <div className="text-xs text-mauve flex items-center gap-1 mt-1">
+          <div className="mt-1 flex items-center gap-1 text-xs text-mauve">
             <Icon name="fork_right" size={16} />
             {repo.branch || "?"}
           </div>
         </div>
       </div>
 
-      <div className="flex gap-2 flex-1">
+      <div className="flex flex-1 gap-2">
         {repo.error && <span className="badge badge-error">err</span>}
         {!repo.error && repo.isClean && !repo.ahead && !repo.behind && (
           <span className="badge badge-clean">
@@ -81,7 +81,7 @@ export function RepoRow(props: Readonly<Props>) {
         )}
       </div>
 
-      <div className="flex gap-2 shrink-0 flex-wrap sm:flex-nowrap">
+      <div className="flex shrink-0 flex-wrap gap-2 sm:flex-nowrap">
         <button
           className="btn btn-blue"
           onClick={() => handleGit("fetch")}

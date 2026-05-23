@@ -46,7 +46,7 @@ export function AddRepoModal(props: Readonly<Props>) {
   return (
     <div
       className={clsx(
-        "fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center",
+        "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm",
         className,
       )}
       onClick={(e) => e.target === e.currentTarget && onClose()}
@@ -78,7 +78,7 @@ export function AddRepoModal(props: Readonly<Props>) {
             placeholder="/Users/you/projects"
           />
         </div>
-        <div className="flex gap-2 justify-end">
+        <div className="flex justify-end gap-2">
           <button className="btn" onClick={onClose}>
             Cancel
           </button>

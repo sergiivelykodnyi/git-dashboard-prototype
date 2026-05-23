@@ -1,0 +1,11 @@
+# Dependencies and builds
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Caching and App Data
+.gemini/
+.git/
+
+# Lock files and system files
+package-lock.json

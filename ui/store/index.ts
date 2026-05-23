@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import type { Repo, LogEntry } from '../types';
+import { create } from "zustand";
+import type { Repo, LogEntry } from "../types";
 
 let logId = 0;
 
@@ -13,18 +13,22 @@ interface AppState {
   updateRepo: (repo: Repo) => void;
   removeRepo: (path: string) => void;
   setActiveRepo: (path: string | null) => void;
-  addLog: (msg: string, type: LogEntry['type']) => void;
+  addLog: (msg: string, type: LogEntry["type"]) => void;
   clearLogs: () => void;
   setLastRefresh: () => void;
 }
 
 function applySystemTheme() {
-  const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'mocha' : 'latte';
+  const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "mocha"
+    : "latte";
   document.documentElement.dataset.theme = theme;
 }
 
 applySystemTheme();
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
+window
+  .matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", applySystemTheme);
 
 export const useAppStore = create<AppState>((set) => ({
   repos: [],
@@ -42,7 +46,8 @@ export const useAppStore = create<AppState>((set) => ({
   removeRepo: (path) =>
     set((state) => ({
       repos: state.repos.filter((r) => r.path !== path),
-      activeRepoPath: state.activeRepoPath === path ? null : state.activeRepoPath,
+      activeRepoPath:
+        state.activeRepoPath === path ? null : state.activeRepoPath,
     })),
 
   setActiveRepo: (path) => set({ activeRepoPath: path }),

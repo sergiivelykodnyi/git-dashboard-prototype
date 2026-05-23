@@ -26,20 +26,20 @@ export function Header(props: Readonly<Props>) {
   return (
     <header
       className={clsx(
-        "bg-mantle border-b border-surface0 px-6 h-14 flex items-center justify-between sticky top-0 z-50 shrink-0",
+        "sticky top-0 z-50 flex h-14 shrink-0 items-center justify-between border-b border-surface0 bg-mantle px-6",
         className,
       )}
       {...rest}
     >
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2 font-semibold text-mauve tracking-tight">
+        <div className="flex items-center gap-2 font-semibold tracking-tight text-mauve">
           <Icon name="fork_right" size={24} />
           git dashboard
         </div>
       </div>
       <div className="flex items-center gap-2">
         {lastRefresh && (
-          <span className="text-xs text-overlay0 px-2 py-1">
+          <span className="px-2 py-1 text-xs text-overlay0">
             Updated {lastRefresh.toLocaleTimeString()}
           </span>
         )}
