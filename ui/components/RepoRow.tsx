@@ -83,6 +83,7 @@ export function RepoRow(props: Readonly<Props>) {
 
       <div className="flex shrink-0 flex-wrap gap-2 sm:flex-nowrap">
         <button
+          type="button"
           className="btn btn-blue"
           onClick={() => handleGit("fetch")}
           disabled={!!loading}
@@ -95,6 +96,7 @@ export function RepoRow(props: Readonly<Props>) {
           Fetch
         </button>
         <button
+          type="button"
           className="btn btn-green"
           onClick={() => handleGit("pull")}
           disabled={!!loading}
@@ -107,6 +109,7 @@ export function RepoRow(props: Readonly<Props>) {
           Pull
         </button>
         <button
+          type="button"
           className="btn btn-peach"
           onClick={() => handleGit("push")}
           disabled={!!loading}
@@ -118,7 +121,7 @@ export function RepoRow(props: Readonly<Props>) {
           )}{" "}
           Push
         </button>
-        <button className="btn" onClick={handleRemove}>
+        <button type="button" className="btn" onClick={handleRemove}>
           <Icon name="delete" size={16} /> Remove
         </button>
       </div>

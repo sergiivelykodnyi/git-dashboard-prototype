@@ -44,7 +44,12 @@ export function Header(props: Readonly<Props>) {
               Updated {lastRefresh.toLocaleTimeString()}
             </span>
           )}
-          <button className="btn" onClick={onRefresh} disabled={refreshing}>
+          <button
+            type="button"
+            className="btn"
+            onClick={onRefresh}
+            disabled={refreshing}
+          >
             {refreshing ? (
               <span className="spinner" />
             ) : (
@@ -57,6 +62,7 @@ export function Header(props: Readonly<Props>) {
             Refresh all
           </button>
           <button
+            type="button"
             className="btn btn-blue"
             onClick={onFetchAll}
             disabled={fetching}
@@ -68,7 +74,7 @@ export function Header(props: Readonly<Props>) {
             )}{" "}
             Fetch all
           </button>
-          <button className="btn btn-primary" onClick={onAddRepo}>
+          <button type="button" className="btn btn-primary" onClick={onAddRepo}>
             <Icon name="add" size={16} /> Add repo
           </button>
         </div>

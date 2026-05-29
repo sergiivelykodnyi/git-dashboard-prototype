@@ -20,7 +20,7 @@ export function LogOutput(props: ComponentProps<"div">) {
       <div className="mb-4 flex items-center justify-between text-base font-semibold text-foreground uppercase">
         <h2>Output Log</h2>
         {logs.length > 0 && (
-          <button className="btn px-2 py-1 text-xs" onClick={clearLogs}>
+          <button className="btn" type="button" onClick={clearLogs}>
             Clear
           </button>
         )}
