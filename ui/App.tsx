@@ -61,10 +61,12 @@ function App() {
             </button>
           </div>
         ) : (
-          <div className="mx-auto max-w-7xl space-y-6">
-            {repos.map((r) => (
-              <RepoRow key={r.path} repo={r} />
-            ))}
+          <div className="mx-auto max-w-7xl space-y-4">
+            <div className="">
+              {repos.map((r) => (
+                <RepoRow key={r.path} repo={r} />
+              ))}
+            </div>
             <LogOutput />
           </div>
         )}

@@ -118,46 +118,51 @@
 
   /* Buttons */
   .btn {
-    @apply inline-flex cursor-pointer items-center gap-1 rounded-md border border-foreground bg-foreground px-2 py-1 text-sm whitespace-nowrap text-background transition-all duration-150;
+    @apply inline-flex h-8 cursor-pointer items-center gap-1 rounded-md border-0 bg-foreground px-3 text-sm whitespace-nowrap text-background transition-all duration-150;
   }
+
   .btn:hover:not(:disabled) {
-    @apply border-subtext0 bg-subtext0;
+    @apply bg-subtext0;
   }
+
   .btn:disabled {
     @apply cursor-not-allowed opacity-50;
   }
 
   .btn-primary {
-    @apply border-mauve bg-mauve text-background;
+    @apply bg-mauve text-background;
   }
+
   .btn-primary:hover:not(:disabled) {
     @apply bg-mauve opacity-85;
   }
 
   .btn-green {
-    @apply border-green bg-green text-background;
+    @apply bg-green text-background;
   }
-  .btn-blue {
-    @apply border-blue bg-blue text-background;
-  }
-  .btn-peach {
-    @apply border-peach bg-peach text-background;
-  }
+
   .btn-green:hover:not(:disabled) {
     @apply bg-green opacity-85;
   }
+
+  .btn-blue {
+    @apply bg-blue text-background;
+  }
+
   .btn-blue:hover:not(:disabled) {
     @apply bg-blue opacity-85;
   }
+
+  .btn-peach {
+    @apply bg-peach text-background;
+  }
+
   .btn-peach:hover:not(:disabled) {
     @apply bg-peach opacity-85;
   }
 
   .btn-icon {
     @apply flex cursor-pointer items-center justify-center rounded-md border border-surface1 bg-transparent p-2 text-subtext0 transition-all duration-150;
-  }
-  .btn-icon:hover {
-    @apply bg-surface0;
   }
 
   /* Badges */
