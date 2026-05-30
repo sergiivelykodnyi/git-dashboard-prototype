@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, type ComponentProps } from "react";
+import { Icon } from "./Icon";
 import { useAppStore } from "../store";
 import clsx from "clsx";
 
@@ -17,8 +18,11 @@ export function LogOutput(props: ComponentProps<"div">) {
       className={clsx("border-t border-surface0 bg-mantle p-4", className)}
       {...rest}
     >
-      <div className="mb-4 flex items-center justify-between text-base font-semibold text-foreground uppercase">
-        <h2>Output Log</h2>
+      <div className="mb-4 flex items-center justify-between text-base text-foreground">
+        <div className="flex items-center gap-2">
+          <Icon name="terminal_2" size={24} />
+          <h2 className="font-semibold">Output Log</h2>
+        </div>
         {logs.length > 0 && (
           <button className="btn" type="button" onClick={clearLogs}>
             Clear
