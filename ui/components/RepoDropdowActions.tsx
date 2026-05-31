@@ -1,4 +1,8 @@
-import { Dropdown, DropdownItem, DropdownAction } from "@ui/components/Dropdown";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownAction,
+} from "@ui/components/Dropdown";
 import { Icon } from "@ui/components/Icon";
 
 interface Props {

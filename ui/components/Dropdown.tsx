@@ -10,6 +10,7 @@ import {
 import type { ComponentProps } from "react";
 import clsx from "clsx";
 import { ButtonIcon } from "@ui/components/Button";
+import { Icon } from "@ui/components/Icon";
 
 interface DropdownContextType {
   isOpen: boolean;
@@ -33,6 +34,8 @@ function useDropdown() {
 interface DropdownProps extends ComponentProps<"div"> {
   triggerIcon?: string;
   triggerTitle?: string;
+  triggerText?: string;
+  triggerClassName?: string;
 }
 
 export function Dropdown(props: DropdownProps) {
@@ -41,6 +44,8 @@ export function Dropdown(props: DropdownProps) {
     className,
     triggerIcon = "more_vert",
     triggerTitle = "More actions",
+    triggerText,
+    triggerClassName,
     ...rest
   } = props;
   const [isOpenMenu, setMenu] = useState(false);
@@ -81,15 +86,30 @@ export function Dropdown(props: DropdownProps) {
         className={clsx("menu-wrapper", className)}
         {...rest}
       >
-        <ButtonIcon
-          id={triggerId}
-          icon={triggerIcon}
-          title={triggerTitle}
-          aria-haspopup="menu"
-          aria-expanded={isOpenMenu}
-          aria-controls={menuId}
-          onClick={() => setMenu((isOpen) => !isOpen)}
-        />
+        {triggerText ? (
+          <button
+            id={triggerId}
+            type="button"
+            className={clsx("button button-primary", triggerClassName)}
+            aria-haspopup="menu"
+            aria-expanded={isOpenMenu}
+            aria-controls={menuId}
+            onClick={() => setMenu((isOpen) => !isOpen)}
+          >
+            <Icon name={triggerIcon} size={16} />
+            {triggerText}
+          </button>
+        ) : (
+          <ButtonIcon
+            id={triggerId}
+            icon={triggerIcon}
+            title={triggerTitle}
+            aria-haspopup="menu"
+            aria-expanded={isOpenMenu}
+            aria-controls={menuId}
+            onClick={() => setMenu((isOpen) => !isOpen)}
+          />
+        )}
         {isOpenMenu && (
           <>
             <div

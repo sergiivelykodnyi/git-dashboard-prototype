@@ -11,10 +11,11 @@ import { RepoDropdowActions } from "@ui/components/RepoDropdowActions";
 
 interface Props extends ComponentProps<"div"> {
   repo: Repo;
+  projectId?: string;
 }
 
 export function RepoRow(props: Readonly<Props>) {
-  const { repo, className, ...rest } = props;
+  const { repo, projectId, className, ...rest } = props;
   const { removeRepo } = useAppStore();
   const { execute, loading } = useGitAction();
 
@@ -25,8 +26,8 @@ export function RepoRow(props: Readonly<Props>) {
   };
 
   const handleRemove = async () => {
-    await apiRemoveRepo(repo.path);
-    removeRepo(repo.path);
+    await apiRemoveRepo(repo.path, projectId);
+    removeRepo(repo.path, projectId);
     toast("Repository removed");
   };
 

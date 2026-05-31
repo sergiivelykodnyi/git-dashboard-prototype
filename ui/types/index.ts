@@ -28,6 +28,23 @@ export interface Repo {
   error?: string;
 }
 
+export interface ProjectRepoConfig {
+  name: string;
+  dir: string;
+}
+
+export interface ProjectConfig {
+  id: string;
+  name: string;
+  repos: ProjectRepoConfig[];
+}
+
+export interface ProjectWithStatus {
+  id: string;
+  name: string;
+  repos: Repo[];
+}
+
 export type GitAction = "fetch" | "pull" | "push" | "commit";
 
 export interface GitActionResult {

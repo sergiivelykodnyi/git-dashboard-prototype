@@ -1,21 +1,23 @@
 import { create } from "zustand";
-import type { Repo, LogEntry } from "@ui/types";
+import type { Repo, LogEntry, ProjectWithStatus } from "@ui/types";
 
 let logId = 0;
 
 export type ThemeMode = "system" | "dark" | "light";
 
 interface AppState {
-  repos: Repo[];
+  projects: ProjectWithStatus[];
+  repos: Repo[]; // Flat array for backward compatibility
   activeRepoPath: string | null;
   logs: LogEntry[];
   lastRefresh: Date | null;
   isLogOpen: boolean;
   themeMode: ThemeMode;
 
-  setRepos: (repos: Repo[]) => void;
+  setProjects: (projects: ProjectWithStatus[]) => void;
+  setRepos: (repos: Repo[]) => void; // Flat set for backward compatibility
   updateRepo: (repo: Repo) => void;
-  removeRepo: (path: string) => void;
+  removeRepo: (path: string, projectId?: string) => void;
   setActiveRepo: (path: string | null) => void;
   addLog: (msg: string, type: LogEntry["type"]) => void;
   clearLogs: () => void;
@@ -61,6 +63,7 @@ window
   });
 
 export const useAppStore = create<AppState>((set) => ({
+  projects: [],
   repos: [],
   activeRepoPath: null,
   logs: [],
@@ -74,19 +77,42 @@ export const useAppStore = create<AppState>((set) => ({
     set({ themeMode: mode });
   },
 
+  setProjects: (projects) =>
+    set({
+      projects,
+      repos: projects.flatMap((p) => p.repos),
+    }),
+
   setRepos: (repos) => set({ repos }),
 
   updateRepo: (repo) =>
-    set((state) => ({
-      repos: state.repos.map((r) => (r.path === repo.path ? repo : r)),
-    })),
+    set((state) => {
+      const nextProjects = state.projects.map((proj) => ({
+        ...proj,
+        repos: proj.repos.map((r) => (r.path === repo.path ? repo : r)),
+      }));
+      return {
+        projects: nextProjects,
+        repos: nextProjects.flatMap((p) => p.repos),
+      };
+    }),
 
-  removeRepo: (path) =>
-    set((state) => ({
-      repos: state.repos.filter((r) => r.path !== path),
-      activeRepoPath:
-        state.activeRepoPath === path ? null : state.activeRepoPath,
-    })),
+  removeRepo: (path, projectId) =>
+    set((state) => {
+      const nextProjects = state.projects.map((proj) => {
+        if (projectId && proj.id !== projectId) return proj;
+        return {
+          ...proj,
+          repos: proj.repos.filter((r) => r.path !== path),
+        };
+      });
+      return {
+        projects: nextProjects,
+        repos: nextProjects.flatMap((p) => p.repos),
+        activeRepoPath:
+          state.activeRepoPath === path ? null : state.activeRepoPath,
+      };
+    }),
 
   setActiveRepo: (path) => set({ activeRepoPath: path }),
 

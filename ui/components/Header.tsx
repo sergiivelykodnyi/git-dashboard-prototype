@@ -21,6 +21,7 @@ interface Props extends ComponentProps<"header"> {
   onFetchAll: () => void;
   fetching: boolean;
   onAddRepo: () => void;
+  onCreateProject: () => void;
 }
 
 export function Header(props: Readonly<Props>) {
@@ -30,6 +31,7 @@ export function Header(props: Readonly<Props>) {
     onFetchAll,
     fetching,
     onAddRepo,
+    onCreateProject,
     className,
     ...rest
   } = props;
@@ -102,13 +104,28 @@ export function Header(props: Readonly<Props>) {
             onClick={onFetchAll}
             disabled={fetching}
           />
-          <button
-            type="button"
-            className="button button-primary ml-2"
-            onClick={onAddRepo}
+          <Dropdown
+            triggerIcon="add_2"
+            triggerText="Add"
+            triggerClassName="ml-2"
           >
-            <Icon name="add_2" size={16} /> Add repo
-          </button>
+            <DropdownItem>
+              <DropdownAction onClick={onCreateProject}>
+                <Icon
+                  className="menu-item-icon"
+                  name="create_new_folder"
+                  size={16}
+                />
+                Create project
+              </DropdownAction>
+            </DropdownItem>
+            <DropdownItem>
+              <DropdownAction onClick={onAddRepo}>
+                <Icon className="menu-item-icon" name="add_2" size={16} />
+                Add repository
+              </DropdownAction>
+            </DropdownItem>
+          </Dropdown>
         </div>
       </div>
     </header>

@@ -24,7 +24,21 @@ export interface RepoStatus {
   }>;
 }
 
-export interface Config {
-  repoPaths: string[];
-  scanDir: string;
+export interface ProjectRepoConfig {
+  name: string;
+  dir: string;
+}
+
+export interface ProjectConfig {
+  id: string;
+  name: string;
+  repos: ProjectRepoConfig[];
+}
+
+export type Config = ProjectConfig[];
+
+export interface ProjectWithStatus {
+  id: string;
+  name: string;
+  repos: RepoStatus[];
 }
