@@ -32,13 +32,7 @@ export function RepoRow(props: Readonly<Props>) {
   };
 
   return (
-    <div
-      className={clsx(
-        "flex items-center gap-4 rounded-xl p-3 hover:bg-surface0/50",
-        className,
-      )}
-      {...rest}
-    >
+    <div className={clsx("flex items-center gap-4 p-4", className)} {...rest}>
       <div className="flex min-w-48 items-center gap-4">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-mauve/15 text-mauve">
           <Icon name="folder_code" size={24} />

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Icon } from "@ui/components/Icon";
 import { Header } from "@ui/components/Header";
-import { RepoRow } from "@ui/components/RepoRow";
+import { ProjectSection } from "@ui/components/ProjectSection";
 import { LogOutput } from "@ui/components/LogOutput";
 import { AddRepoModal } from "@ui/components/AddRepoModal";
 import { NewProjectModal } from "@ui/components/NewProjectModal";
 import { ToastContainer } from "@ui/components/Toast";
 import { useRepos } from "@ui/hooks/useRepos";
 import { useAppStore } from "@ui/store";
-import { runAllGitAction, runProjectGitAction } from "@ui/api";
+import { runAllGitAction } from "@ui/api";
 import { toast } from "@ui/utils/toast";
 
 function App() {
@@ -17,9 +17,6 @@ function App() {
 
   const [refreshing, setRefreshing] = useState(false);
   const [fetching, setFetching] = useState(false);
-  const [projectActionsLoading, setProjectActionsLoading] = useState<
-    Record<string, string | null>
-  >({});
 
   const { refresh } = useRepos();
   const { projects, addLog } = useAppStore();
@@ -51,33 +48,6 @@ function App() {
       toast(msg, "err");
     } finally {
       setFetching(false);
-    }
-  };
-
-  const handleProjectGitAction = async (
-    projectId: string,
-    projectName: string,
-    action: "fetch" | "pull" | "push",
-  ) => {
-    setProjectActionsLoading((prev) => ({ ...prev, [projectId]: action }));
-    addLog(`[Project: ${projectName}] Running git ${action}…`, "info");
-    try {
-      const data = await runProjectGitAction(projectId, action);
-      if (data.success) {
-        addLog(`[Project: ${projectName}] ${data.result}`, "ok");
-        toast(data.result, "ok");
-        // Refresh the whole workspace status
-        await refresh();
-      } else {
-        addLog(`[Project: ${projectName}] ${data.result}`, "err");
-        toast(data.result, "err");
-      }
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Unknown error";
-      addLog(`[Project: ${projectName}] Error: ${msg}`, "err");
-      toast(msg, "err");
-    } finally {
-      setProjectActionsLoading((prev) => ({ ...prev, [projectId]: null }));
     }
   };
 
@@ -115,102 +85,13 @@ function App() {
             </div>
           ) : (
             <div className="mx-auto max-w-7xl space-y-8 pb-12">
-              {projects.map((project) => {
-                const loadingAction = projectActionsLoading[project.id];
-                return (
-                  <section
-                    key={project.id}
-                    className="flex flex-col gap-3 rounded-2xl border border-surface0/60 bg-mantle/30 p-5 backdrop-blur-md"
-                  >
-                    {/* Project Header */}
-                    <div className="flex items-center justify-between border-b border-surface0/80 pb-3">
-                      <div className="flex items-center gap-2.5">
-                        <Icon name="folder" size={20} className="text-mauve" />
-                        <h2 className="text-lg font-bold tracking-tight text-foreground">
-                          {project.name}
-                        </h2>
-                        <span className="rounded-full bg-surface0 px-2 py-0.5 font-mono text-xs font-semibold text-subtext0">
-                          {project.repos.length}{" "}
-                          {project.repos.length === 1 ? "repo" : "repos"}
-                        </span>
-                      </div>
-
-                      {/* Project Level Controls */}
-                      {project.repos.length > 0 && (
-                        <div className="flex items-center gap-1">
-                          <button
-                            type="button"
-                            className="button button-secondary flex h-7 items-center gap-1 border border-surface1 bg-surface0 px-2.5 text-xs text-subtext0 hover:bg-surface1"
-                            disabled={!!loadingAction}
-                            onClick={() =>
-                              handleProjectGitAction(
-                                project.id,
-                                project.name,
-                                "fetch",
-                              )
-                            }
-                          >
-                            {loadingAction === "fetch" ? (
-                              <span className="spinner border-1.5 size-3 border-subtext0 border-t-transparent" />
-                            ) : (
-                              <Icon name="cloud_download" size={14} />
-                            )}
-                            Fetch project
-                          </button>
-                          <button
-                            type="button"
-                            className="button button-secondary flex h-7 items-center gap-1 border border-surface1 bg-surface0 px-2.5 text-xs text-subtext0 hover:bg-surface1"
-                            disabled={!!loadingAction}
-                            onClick={() =>
-                              handleProjectGitAction(
-                                project.id,
-                                project.name,
-                                "pull",
-                              )
-                            }
-                          >
-                            {loadingAction === "pull" ? (
-                              <span className="spinner border-1.5 size-3 border-subtext0 border-t-transparent" />
-                            ) : (
-                              <Icon name="download" size={14} />
-                            )}
-                            Pull project
-                          </button>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Project Repositories */}
-                    <div className="flex flex-col gap-2">
-                      {project.repos.length === 0 ? (
-                        <div className="rounded-xl border border-dashed border-surface0 bg-crust/20 py-6 text-center text-xs text-subtext0 italic">
-                          No repositories added to this project yet.
-                          <button
-                            type="button"
-                            className="ml-1.5 cursor-pointer font-medium text-mauve underline hover:text-mauve/80"
-                            onClick={() => {
-                              // Auto-select this project in AddRepoModal if desired
-                              setShowAddRepoModal(true);
-                            }}
-                          >
-                            Add one now
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="divide-y divide-surface0/40">
-                          {project.repos.map((r) => (
-                            <RepoRow
-                              key={r.path}
-                              repo={r}
-                              projectId={project.id}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </section>
-                );
-              })}
+              {projects.map((project) => (
+                <ProjectSection
+                  key={project.id}
+                  project={project}
+                  onAddRepoClick={() => setShowAddRepoModal(true)}
+                />
+              ))}
             </div>
           )}
         </div>
