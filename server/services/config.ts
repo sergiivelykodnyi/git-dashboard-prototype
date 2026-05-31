@@ -8,86 +8,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const CONFIG_FILE = path.join(__dirname, "../../config.json");
 
-function scanDirectorySimple(dir: string): string[] {
-  try {
-    const resolved = path.resolve(dir);
-    const real = fs.realpathSync(resolved);
-    if (!fs.statSync(real).isDirectory()) return [];
-    return fs.readdirSync(real).flatMap((name) => {
-      try {
-        const repoReal = fs.realpathSync(path.join(real, name));
-        if (
-          fs.statSync(repoReal).isDirectory() &&
-          fs.existsSync(path.join(repoReal, ".git"))
-        ) {
-          return [repoReal];
-        }
-        return [];
-      } catch {
-        return [];
-      }
-    });
-  } catch {
-    return [];
-  }
-}
-
 export function loadConfig(): Config {
   if (fs.existsSync(CONFIG_FILE)) {
     try {
       const raw = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
-
-      // If it's the old schema (an object with repoPaths)
-      if (
-        raw &&
-        !Array.isArray(raw) &&
-        ("repoPaths" in raw || "scanDir" in raw)
-      ) {
-        const legacyPaths: string[] = Array.isArray(raw.repoPaths)
-          ? raw.repoPaths.filter((p: unknown) => typeof p === "string")
-          : [];
-        const legacyScanDir: string =
-          typeof raw.scanDir === "string" ? raw.scanDir : "";
-
-        const defaultProject = {
-          id: "default-project",
-          name: "Default Project",
-          repos: [] as { name: string; dir: string }[],
-        };
-
-        const seenDirs = new Set<string>();
-
-        // Add regular repo paths
-        legacyPaths.forEach((dir) => {
-          const resolved = resolveRepoPath(dir);
-          if (resolved && !seenDirs.has(resolved)) {
-            seenDirs.add(resolved);
-            defaultProject.repos.push({
-              name: path.basename(resolved),
-              dir: resolved,
-            });
-          }
-        });
-
-        // Add scanned repo paths
-        if (legacyScanDir) {
-          const scanned = scanDirectorySimple(legacyScanDir);
-          scanned.forEach((dir) => {
-            const resolved = resolveRepoPath(dir);
-            if (resolved && !seenDirs.has(resolved)) {
-              seenDirs.add(resolved);
-              defaultProject.repos.push({
-                name: path.basename(resolved),
-                dir: resolved,
-              });
-            }
-          });
-        }
-
-        const migratedConfig: Config = [defaultProject];
-        saveConfig(migratedConfig);
-        return migratedConfig;
-      }
 
       // If it is the new array format
       if (Array.isArray(raw)) {

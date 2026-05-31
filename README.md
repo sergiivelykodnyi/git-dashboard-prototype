@@ -44,15 +44,14 @@ Then open **http://git-dashboard.localhost:5801** in your browser.
 
 ## Adding Repositories
 
-**Single repo** — Click **Add repo** → paste an absolute path, e.g. `/Users/you/projects/my-app`
-
-**Scan a folder** — Click **Add repo** → enter a parent directory, e.g. `/Users/you/projects`  
-All git repositories inside will be auto-discovered.
+Click the add icon dropdown in the header and choose:
+- **Create project** to create a new named project container.
+- **Add repository** to add a git repository under a specific project by specifying its absolute path (e.g., `/Users/you/projects/my-app`) and display name.
 
 ## Project Structure
 
 ```
-├── config.json              # Saved repository paths and scan directory
+├── config.json              # Saved project and repository configuration
 ├── package.json             # NPM package scripts and dependencies
 ├── tsconfig.json            # TypeScript configuration base
 ├── server/                  # Node.js + Express + TS Backend
@@ -60,8 +59,8 @@ All git repositories inside will be auto-discovered.
 │   ├── routes/
 │   │   └── api.ts           # Git operation API endpoints
 │   └── services/
-│       ├── config.ts        # Loads/saves settings to config.json
-│       └── git.ts           # Simple-git operations logic
+│   │   ├── config.ts        # Loads/saves settings to config.json
+│   │   └── git.ts           # Simple-git operations logic
 ├── shared/                  # Code shared between frontend and backend
 │   └── types.ts             # Shared TypeScript types and interfaces
 └── ui/                      # React Frontend UI
@@ -70,7 +69,7 @@ All git repositories inside will be auto-discovered.
     ├── api/
     │   └── index.ts         # Axios API requests to backend
     ├── components/          # Reusable UI components
-    │   ├── AddRepoModal.tsx # Dialog to add a repo or scan a folder
+    │   ├── AddRepoModal.tsx # Dialog to add a repo to a project
     │   ├── FileList.tsx     # Modified files list component
     │   ├── Header.tsx       # Header with global controls
     │   ├── LogOutput.tsx    # Live terminal log console
@@ -86,7 +85,7 @@ All git repositories inside will be auto-discovered.
     ├── types/
     │   └── index.ts         # Frontend-specific types
     └── utils/
-        └── toast.ts         # Simple notification helper
+    │   └── toast.ts         # Simple notification helper
 ```
 
 ## Custom Port
@@ -95,4 +94,4 @@ All git repositories inside will be auto-discovered.
 PORT=8080 npm run server
 ```
 
-Repos and scan directory are saved in `config.json` in the root directory.
+Projects and repository configurations are saved in `config.json` in the root directory.

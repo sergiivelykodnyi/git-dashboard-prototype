@@ -2,27 +2,9 @@ import fs from "fs";
 import path from "path";
 import { simpleGit } from "simple-git";
 import { RepoStatus } from "../../shared/types.js";
-import { resolveRepoPath } from "./config.js";
 
 export function isGitRepo(dir: string): boolean {
   return fs.existsSync(path.join(dir, ".git"));
-}
-
-export function scanDirectory(dir: string): string[] {
-  const resolved = resolveRepoPath(dir);
-  if (!resolved) return [];
-  try {
-    return fs.readdirSync(resolved).flatMap((name) => {
-      try {
-        const real = fs.realpathSync(path.join(resolved, name));
-        return fs.statSync(real).isDirectory() && isGitRepo(real) ? [real] : [];
-      } catch {
-        return [];
-      }
-    });
-  } catch {
-    return [];
-  }
 }
 
 export async function getRepoStatus(repoPath: string): Promise<RepoStatus> {
