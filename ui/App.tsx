@@ -8,7 +8,7 @@ import { NewProjectModal } from "@ui/components/NewProjectModal";
 import { ToastContainer } from "@ui/components/Toast";
 import { useRepos } from "@ui/hooks/useRepos";
 import { useAppStore } from "@ui/store";
-import { fetchAllRepos, runProjectGitAction } from "@ui/api";
+import { runAllGitAction, runProjectGitAction } from "@ui/api";
 import { toast } from "@ui/utils/toast";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
   >({});
 
   const { refresh } = useRepos();
-  const { projects, setProjects, addLog } = useAppStore();
+  const { projects, addLog } = useAppStore();
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -36,11 +36,19 @@ function App() {
     setFetching(true);
     addLog("Running fetch all…", "info");
     try {
-      const updated = await fetchAllRepos();
-      setProjects(updated);
-      addLog("Fetched all repositories", "ok");
-    } catch {
-      addLog("Failed to fetch all repositories", "err");
+      const data = await runAllGitAction("fetch");
+      if (data.success) {
+        addLog(data.result, "ok");
+        toast(data.result, "ok");
+        await refresh();
+      } else {
+        addLog(data.result, "err");
+        toast(data.result, "err");
+      }
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Unknown error";
+      addLog(`Failed to fetch all repositories: ${msg}`, "err");
+      toast(msg, "err");
     } finally {
       setFetching(false);
     }

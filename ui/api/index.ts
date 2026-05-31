@@ -13,7 +13,7 @@ const api = axios.create({
 });
 
 export const fetchRepos = (): Promise<ProjectWithStatus[]> =>
-  api.get("/repos").then((r) => r.data);
+  api.get("/projects/status").then((r) => r.data);
 
 export const fetchRepoStatus = (path: string): Promise<Repo> =>
   api.get("/repos/status", { params: { path } }).then((r) => r.data);
@@ -23,7 +23,7 @@ export const runGitAction = (
   action: GitAction,
   message?: string,
 ): Promise<GitActionResult> =>
-  api.post("/repos/git/dir", { path, action, message }).then((r) => r.data);
+  api.post("/repos/git/execute", { path, action, message }).then((r) => r.data);
 
 export const runProjectGitAction = (
   projectId: string,
@@ -31,41 +31,42 @@ export const runProjectGitAction = (
   message?: string,
 ): Promise<GitActionResult> =>
   api
-    .post(`/repos/project/${projectId}/git`, { action, message })
+    .post(`/projects/${projectId}/git/execute`, { action, message })
     .then((r) => r.data);
 
 export const runAllGitAction = (
   action: GitAction,
   message?: string,
 ): Promise<GitActionResult> =>
-  api.post("/repos/git", { action, message }).then((r) => r.data);
-
-export const fetchAllRepos = (): Promise<ProjectWithStatus[]> =>
-  api.post("/repos/fetch-all").then((r) => r.data);
+  api.post("/repos/git/execute-all", { action, message }).then((r) => r.data);
 
 export const addRepo = (
   projectId: string,
   name: string,
-  dir: string,
+  path: string,
 ): Promise<{ ok: boolean; error?: string }> =>
-  api.post("/repos/add", { projectId, name, dir }).then((r) => r.data);
+  api.post(`/projects/${projectId}/repos`, { name, path }).then((r) => r.data);
 
 export const removeRepo = (
   path: string,
   projectId?: string,
-): Promise<{ ok: boolean }> =>
-  api.delete("/repos", { data: { path, projectId } }).then((r) => r.data);
+): Promise<{ ok: boolean }> => {
+  if (!projectId) return Promise.reject(new Error("projectId required"));
+  return api
+    .delete(`/projects/${projectId}/repos`, { data: { path } })
+    .then((r) => r.data);
+};
 
 export const getConfig = (): Promise<ProjectConfig[]> =>
-  api.get("/config").then((r) => r.data);
+  api.get("/projects").then((r) => r.data);
 
 export const saveConfig = (config: ProjectConfig[]): Promise<{ ok: boolean }> =>
-  api.post("/config", config).then((r) => r.data);
+  api.post("/projects", config).then((r) => r.data);
 
 export const validateDirectory = (
-  dir: string,
+  path: string,
 ): Promise<{ valid: boolean; name?: string; error?: string }> => {
-  const trimmed = dir.trim();
+  const trimmed = path.trim();
   const isAbsolute =
     trimmed.startsWith("/") ||
     trimmed.startsWith("~") ||
@@ -80,20 +81,18 @@ export const validateDirectory = (
     });
   }
 
-  return api
-    .get("/repos/git/validate", { params: { dir: trimmed } })
-    .then((r) => {
-      const isValid = r.data === true;
-      let derivedName: string | undefined;
-      if (isValid && trimmed) {
-        const s = trimmed.replace(/\.git$/i, "").replace(/[/\\\\]+$/, "");
-        const parts = s.split(/[/\\:]/).filter(Boolean);
-        derivedName = (parts[parts.length - 1] || "").trim();
-      }
-      return {
-        valid: isValid,
-        name: derivedName,
-        error: isValid ? undefined : "Not a valid git repository",
-      };
-    });
+  return api.get("/repos/validate", { params: { path: trimmed } }).then((r) => {
+    const isValid = r.data === true;
+    let derivedName: string | undefined;
+    if (isValid && trimmed) {
+      const s = trimmed.replace(/\.git$/i, "").replace(/[/\\\\]+$/, "");
+      const parts = s.split(/[/\\:]/).filter(Boolean);
+      derivedName = (parts[parts.length - 1] || "").trim();
+    }
+    return {
+      valid: isValid,
+      name: derivedName,
+      error: isValid ? undefined : "Not a valid git repository",
+    };
+  });
 };

@@ -23,9 +23,10 @@ export function loadConfig(): Config {
             repos: Array.isArray(p.repos)
               ? p.repos.map((repo) => {
                   const r = repo as Record<string, unknown>;
+
                   return {
                     name: typeof r.name === "string" ? r.name : "",
-                    dir: typeof r.dir === "string" ? r.dir : "",
+                    path: typeof r.path === "string" ? r.path : "",
                   };
                 })
               : [],

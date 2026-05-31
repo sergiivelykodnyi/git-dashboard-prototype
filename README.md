@@ -45,6 +45,7 @@ Then open **http://git-dashboard.localhost:5801** in your browser.
 ## Adding Repositories
 
 Click the add icon dropdown in the header and choose:
+
 - **Create project** to create a new named project container.
 - **Add repository** to add a git repository under a specific project by specifying its absolute path (e.g., `/Users/you/projects/my-app`) and display name.
 

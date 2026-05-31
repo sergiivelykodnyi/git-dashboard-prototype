@@ -26,7 +26,7 @@ export interface RepoStatus {
 
 export interface ProjectRepoConfig {
   name: string;
-  dir: string;
+  path: string;
 }
 
 export interface ProjectConfig {

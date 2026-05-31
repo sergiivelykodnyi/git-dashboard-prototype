@@ -145,7 +145,7 @@ export function NewProjectModal(props: Readonly<Props>) {
       .filter((r) => r.path.trim().length > 0)
       .map((r) => ({
         name: r.name.trim() || deriveName(r.path),
-        dir: r.path.trim(),
+        path: r.path.trim(),
       }));
 
     // Ensure all active paths are valid
