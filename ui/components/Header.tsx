@@ -46,12 +46,9 @@ export function Header(props: Readonly<Props>) {
       {...rest}
     >
       <div className="flex h-full items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 font-semibold tracking-tight text-mauve uppercase">
-            <Icon name="fork_right" size={24} />
-            git dashboard
-          </div>
-        </div>
+        <h1 className="flex items-center gap-3 text-xl font-semibold">
+          All repositories
+        </h1>
         <div className="flex items-center gap-2">
           {lastRefresh && (
             <span className="px-2 py-1 text-xs text-overlay0">

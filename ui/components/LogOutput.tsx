@@ -28,7 +28,7 @@ export function LogOutput(props: Readonly<ComponentProps<"div">>) {
   return (
     <div
       className={clsx(
-        "shrink-0 border-t border-surface1 bg-mantle transition-colors duration-150",
+        "shrink-0 border-t border-surface0 bg-mantle transition-colors duration-150",
         className,
       )}
       {...rest}

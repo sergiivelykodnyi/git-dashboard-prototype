@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Icon } from "@ui/components/Icon";
 import { Header } from "@ui/components/Header";
+import { Sidebar } from "@ui/components/Sidebar";
 import { ProjectSection } from "@ui/components/ProjectSection";
 import { LogOutput } from "@ui/components/LogOutput";
 import { AddRepoModal } from "@ui/components/AddRepoModal";
@@ -52,7 +53,8 @@ function App() {
   };
 
   return (
-    <div className="h-full">
+    <div className="grid h-full grid-cols-[288px_1fr]">
+      <Sidebar />
       <main className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <Header
           onRefresh={handleRefresh}
