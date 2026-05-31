@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "design": "npx browser-sync design -w --no-inject-changes --port 4000 --no-ui --host design.git-dashboard.localhost --open external",
+    "design": "npx browser-sync design -w --port 4000 --no-ui --host design.git-dashboard.localhost --no-open --no-inject-changes",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . --fix",

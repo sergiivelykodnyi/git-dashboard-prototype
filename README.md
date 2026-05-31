@@ -37,10 +37,10 @@ npm run dev:all
 
 # Option B — run separately in two terminals
 npm run server   # backend  → http://localhost:5800
-npm run dev      # frontend → http://localhost:5173
+npm run dev      # frontend → http://git-dashboard.localhost:5801
 ```
 
-Then open **http://localhost:5173** in your browser.
+Then open **http://git-dashboard.localhost:5801** in your browser.
 
 ## Adding Repositories
 

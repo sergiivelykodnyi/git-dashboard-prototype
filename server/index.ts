@@ -3,7 +3,7 @@ import cors from "cors";
 import { apiRouter } from "./routes/api.js";
 
 const app = express();
-app.use(cors({ origin: /^http:\/\/localhost(:\d+)?$/ }));
+app.use(cors({ origin: /^http:\/\/(?:[a-zA-Z0-9-]+\.)*localhost(:\d+)?$/ }));
 app.use(express.json());
 app.use(express.static("public"));
 

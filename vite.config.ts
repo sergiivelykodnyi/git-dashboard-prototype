@@ -13,5 +13,6 @@ export default defineConfig({
   },
   server: {
     port: 5801,
+    host: "git-dashboard.localhost",
   },
 });

@@ -3,7 +3,11 @@ import clsx from "clsx";
 import { Icon } from "@ui/components/Icon";
 import { useAppStore, type ThemeMode } from "@ui/store";
 import { ButtonIcon } from "@ui/components/Button";
-import { Dropdown, DropdownItem, DropdownAction } from "@ui/components/Dropdown";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownAction,
+} from "@ui/components/Dropdown";
 
 const themeIcons: Record<ThemeMode, string> = {
   system: "contrast",
@@ -103,7 +107,7 @@ export function Header(props: Readonly<Props>) {
             className="button button-primary ml-2"
             onClick={onAddRepo}
           >
-            <Icon name="add" size={16} /> Add repo
+            <Icon name="add_2" size={16} /> Add repo
           </button>
         </div>
       </div>
