@@ -12,7 +12,7 @@ export function Sidebar(props: ComponentProps<"aside">) {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     clsx(
       "flex items-center gap-2 rounded-lg p-2 transition-colors duration-200 hover:cursor-pointer hover:bg-surface0",
-      isActive ? "bg-mauve/15 text-mauve" : "text-subtext1",
+      isActive ? "bg-mauve/15 text-mauve" : "text-subtext0",
     );
 
   return (

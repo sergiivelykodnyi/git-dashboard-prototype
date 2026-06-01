@@ -78,6 +78,7 @@ export const useAppStore = create<AppState>((set) => ({
   showNewProjectModal: false,
 
   setAddRepoModalOpen: (open) => set({ showAddRepoModal: open }),
+
   setNewProjectModalOpen: (open) => set({ showNewProjectModal: open }),
 
   setThemeMode: (mode) => {

@@ -9,6 +9,7 @@ import {
   DropdownItem,
   DropdownAction,
 } from "@ui/components/Dropdown";
+import { pluralize } from "@ui/utilities/pluralize";
 
 const themeIcons: Record<ThemeMode, string> = {
   system: "contrast",
@@ -23,27 +24,35 @@ interface Props extends ComponentProps<"header"> {
   fetching: boolean;
 }
 
-export function Header(props: Readonly<Props>) {
-  const { onRefresh, refreshing, onFetchAll, fetching, className, ...rest } =
-    props;
-
+export function Header({
+  onRefresh,
+  refreshing,
+  onFetchAll,
+  fetching,
+  className,
+  ...rest
+}: Readonly<Props>) {
   const location = useLocation();
   const match = matchPath({ path: "/projects/:projectId" }, location.pathname);
   const projectId = match?.params.projectId;
 
-  const {
-    projects,
-    lastRefresh,
-    themeMode,
-    setThemeMode,
-    setAddRepoModalOpen,
-    setNewProjectModalOpen,
-  } = useAppStore();
+  const projects = useAppStore((state) => state.projects);
+  const repos = useAppStore((state) => state.repos);
+  const lastRefresh = useAppStore((state) => state.lastRefresh);
+  const themeMode = useAppStore((state) => state.themeMode);
+  const setThemeMode = useAppStore((state) => state.setThemeMode);
+  const setAddRepoModalOpen = useAppStore((state) => state.setAddRepoModalOpen);
+  const setNewProjectModalOpen = useAppStore(
+    (state) => state.setNewProjectModalOpen,
+  );
 
   const currentProject = projectId
     ? projects.find((p) => p.id === projectId)
     : null;
   const title = currentProject ? currentProject.name : "All repositories";
+  const reposCount =
+    title === "All repositories" ? repos.length : currentProject?.repos.length;
+  const isAllRepos = title === "All repositories";
 
   return (
     <header
@@ -54,9 +63,28 @@ export function Header(props: Readonly<Props>) {
       {...rest}
     >
       <div className="flex h-full items-center justify-between">
-        <h1 className="flex items-center gap-3 text-xl font-semibold">
-          {title}
-        </h1>
+        <div>
+          <h1 className="flex items-center gap-3 text-xl font-semibold">
+            {title}
+          </h1>
+          <div className="flex items-center gap-1 text-xs text-subtext0">
+            {isAllRepos ? (
+              <>
+                <div>{pluralize(projects.length, "project")}</div>
+                <div>•</div>
+                {typeof reposCount === "number" && (
+                  <div>
+                    {pluralize(reposCount, "repository", "repositories")}
+                  </div>
+                )}
+              </>
+            ) : (
+              typeof reposCount === "number" && (
+                <div>{pluralize(reposCount, "repository", "repositories")}</div>
+              )
+            )}
+          </div>
+        </div>
         <div className="flex items-center gap-2">
           {lastRefresh && (
             <span className="px-2 py-1 text-xs text-overlay0">
