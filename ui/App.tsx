@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Routes, Route, useParams } from "react-router-dom";
 import { Icon } from "@ui/components/Icon";
 import { Header } from "@ui/components/Header";
 import { Sidebar } from "@ui/components/Sidebar";
@@ -12,15 +13,92 @@ import { useAppStore } from "@ui/store";
 import { runAllGitAction } from "@ui/api";
 import { toast } from "@ui/utils/toast";
 
-function App() {
-  const [showAddRepoModal, setShowAddRepoModal] = useState(false);
-  const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+function NoProjectsYetView() {
+  const { setNewProjectModalOpen } = useAppStore();
+  return (
+    <div className="mx-auto max-w-7xl pt-16 text-center text-overlay0">
+      <Icon name="folder" size={56} className="text-mauve/40" />
+      <h2 className="mt-2 text-2xl font-medium text-subtext0">
+        No projects yet
+      </h2>
+      <p className="mt-1">
+        Create a project and add repositories to get started.
+      </p>
+      <div className="mt-5 flex justify-center gap-3">
+        <button
+          type="button"
+          className="button button-primary"
+          onClick={() => setNewProjectModalOpen(true)}
+        >
+          <Icon name="create_new_folder" size={16} /> Create project
+        </button>
+      </div>
+    </div>
+  );
+}
 
+function AllProjectsView() {
+  const { projects, setAddRepoModalOpen } = useAppStore();
+
+  if (projects.length === 0) {
+    return <NoProjectsYetView />;
+  }
+
+  return (
+    <div className="mx-auto max-w-7xl space-y-8 pb-12">
+      {projects.map((project) => (
+        <ProjectSection
+          key={project.id}
+          project={project}
+          onAddRepoClick={() => setAddRepoModalOpen(true)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function SingleProjectView() {
+  const { projectId } = useParams<{ projectId: string }>();
+  const { projects, setAddRepoModalOpen } = useAppStore();
+
+  const project = projects.find((p) => p.id === projectId);
+
+  if (!project) {
+    return (
+      <div className="mx-auto max-w-7xl pt-16 text-center text-overlay0">
+        <Icon name="folder" size={56} className="text-mauve/40" />
+        <h2 className="mt-2 text-2xl font-medium text-subtext0">
+          Project not found
+        </h2>
+        <p className="mt-1">
+          The project you are looking for does not exist or has been deleted.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-7xl space-y-8 pb-12">
+      <ProjectSection
+        project={project}
+        onAddRepoClick={() => setAddRepoModalOpen(true)}
+      />
+    </div>
+  );
+}
+
+function App() {
   const [refreshing, setRefreshing] = useState(false);
   const [fetching, setFetching] = useState(false);
 
   const { refresh } = useRepos();
-  const { projects, addLog } = useAppStore();
+  const {
+    addLog,
+    showAddRepoModal,
+    showNewProjectModal,
+    setAddRepoModalOpen,
+    setNewProjectModalOpen,
+  } = useAppStore();
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -61,41 +139,13 @@ function App() {
           refreshing={refreshing}
           onFetchAll={handleFetchAll}
           fetching={fetching}
-          onAddRepo={() => setShowAddRepoModal(true)}
-          onCreateProject={() => setShowNewProjectModal(true)}
         />
 
         <div className="min-h-0 flex-1 overflow-y-scroll p-6">
-          {projects.length === 0 ? (
-            <div className="mx-auto max-w-7xl pt-16 text-center text-overlay0">
-              <Icon name="folder" size={56} className="text-mauve/40" />
-              <h2 className="mt-2 text-2xl font-medium text-subtext0">
-                No projects yet
-              </h2>
-              <p className="mt-1">
-                Create a project and add repositories to get started.
-              </p>
-              <div className="mt-5 flex justify-center gap-3">
-                <button
-                  type="button"
-                  className="button button-primary"
-                  onClick={() => setShowNewProjectModal(true)}
-                >
-                  <Icon name="create_new_folder" size={16} /> Create project
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="mx-auto max-w-7xl space-y-8 pb-12">
-              {projects.map((project) => (
-                <ProjectSection
-                  key={project.id}
-                  project={project}
-                  onAddRepoClick={() => setShowAddRepoModal(true)}
-                />
-              ))}
-            </div>
-          )}
+          <Routes>
+            <Route path="/" element={<AllProjectsView />} />
+            <Route path="/projects/:projectId" element={<SingleProjectView />} />
+          </Routes>
         </div>
 
         <LogOutput />
@@ -104,7 +154,7 @@ function App() {
       {/* Add Repository Modal */}
       {showAddRepoModal && (
         <AddRepoModal
-          onClose={() => setShowAddRepoModal(false)}
+          onClose={() => setAddRepoModalOpen(false)}
           onAdded={handleRefresh}
         />
       )}
@@ -112,7 +162,7 @@ function App() {
       {/* New Project Modal */}
       {showNewProjectModal && (
         <NewProjectModal
-          onClose={() => setShowNewProjectModal(false)}
+          onClose={() => setNewProjectModalOpen(false)}
           onCreated={handleRefresh}
         />
       )}

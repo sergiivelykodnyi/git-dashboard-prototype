@@ -13,6 +13,8 @@ interface AppState {
   lastRefresh: Date | null;
   isLogOpen: boolean;
   themeMode: ThemeMode;
+  showAddRepoModal: boolean;
+  showNewProjectModal: boolean;
 
   setProjects: (projects: ProjectWithStatus[]) => void;
   setRepos: (repos: Repo[]) => void; // Flat set for backward compatibility
@@ -25,6 +27,8 @@ interface AppState {
   toggleLogOpen: () => void;
   setLogOpen: (open: boolean) => void;
   setThemeMode: (mode: ThemeMode) => void;
+  setAddRepoModalOpen: (open: boolean) => void;
+  setNewProjectModalOpen: (open: boolean) => void;
 }
 
 const STORAGE_KEY = "git-dashboard-theme";
@@ -70,6 +74,11 @@ export const useAppStore = create<AppState>((set) => ({
   lastRefresh: null,
   isLogOpen: false,
   themeMode: getInitialThemeMode(),
+  showAddRepoModal: false,
+  showNewProjectModal: false,
+
+  setAddRepoModalOpen: (open) => set({ showAddRepoModal: open }),
+  setNewProjectModalOpen: (open) => set({ showNewProjectModal: open }),
 
   setThemeMode: (mode) => {
     localStorage.setItem(STORAGE_KEY, mode);

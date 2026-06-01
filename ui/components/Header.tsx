@@ -1,5 +1,6 @@
 import { type ComponentProps } from "react";
 import clsx from "clsx";
+import { useLocation, matchPath } from "react-router-dom";
 import { Icon } from "@ui/components/Icon";
 import { useAppStore, type ThemeMode } from "@ui/store";
 import { ButtonIcon } from "@ui/components/Button";
@@ -20,22 +21,29 @@ interface Props extends ComponentProps<"header"> {
   refreshing: boolean;
   onFetchAll: () => void;
   fetching: boolean;
-  onAddRepo: () => void;
-  onCreateProject: () => void;
 }
 
 export function Header(props: Readonly<Props>) {
+  const { onRefresh, refreshing, onFetchAll, fetching, className, ...rest } =
+    props;
+
+  const location = useLocation();
+  const match = matchPath({ path: "/projects/:projectId" }, location.pathname);
+  const projectId = match?.params.projectId;
+
   const {
-    onRefresh,
-    refreshing,
-    onFetchAll,
-    fetching,
-    onAddRepo,
-    onCreateProject,
-    className,
-    ...rest
-  } = props;
-  const { lastRefresh, themeMode, setThemeMode } = useAppStore();
+    projects,
+    lastRefresh,
+    themeMode,
+    setThemeMode,
+    setAddRepoModalOpen,
+    setNewProjectModalOpen,
+  } = useAppStore();
+
+  const currentProject = projectId
+    ? projects.find((p) => p.id === projectId)
+    : null;
+  const title = currentProject ? currentProject.name : "All repositories";
 
   return (
     <header
@@ -47,7 +55,7 @@ export function Header(props: Readonly<Props>) {
     >
       <div className="flex h-full items-center justify-between">
         <h1 className="flex items-center gap-3 text-xl font-semibold">
-          All repositories
+          {title}
         </h1>
         <div className="flex items-center gap-2">
           {lastRefresh && (
@@ -107,7 +115,7 @@ export function Header(props: Readonly<Props>) {
             triggerClassName="ml-2"
           >
             <DropdownItem>
-              <DropdownAction onClick={onCreateProject}>
+              <DropdownAction onClick={() => setNewProjectModalOpen(true)}>
                 <Icon
                   className="menu-item-icon"
                   name="create_new_folder"
@@ -117,7 +125,7 @@ export function Header(props: Readonly<Props>) {
               </DropdownAction>
             </DropdownItem>
             <DropdownItem>
-              <DropdownAction onClick={onAddRepo}>
+              <DropdownAction onClick={() => setAddRepoModalOpen(true)}>
                 <Icon className="menu-item-icon" name="add_2" size={16} />
                 Add repository
               </DropdownAction>

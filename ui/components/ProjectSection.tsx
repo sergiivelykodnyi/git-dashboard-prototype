@@ -49,7 +49,7 @@ export function ProjectSection(props: Readonly<Props>) {
   return (
     <section
       className={clsx(
-        "flex flex-col gap-3 rounded-2xl border border-surface0/60 bg-mantle/30 p-5 backdrop-blur-md",
+        "flex flex-col rounded-2xl border border-surface0/60 bg-mantle/30 p-4 backdrop-blur-md",
         className,
       )}
       {...rest}
