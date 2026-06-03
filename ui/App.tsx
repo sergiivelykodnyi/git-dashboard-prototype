@@ -4,6 +4,7 @@ import { Icon } from "@ui/components/Icon";
 import { Header } from "@ui/components/Header";
 import { Sidebar } from "@ui/components/Sidebar";
 import { ProjectSection } from "@ui/components/ProjectSection";
+import { ProjectRepos } from "@ui/components/ProjectRepos";
 import { LogOutput } from "@ui/components/LogOutput";
 import { AddRepoModal } from "@ui/components/AddRepoModal";
 import { NewProjectModal } from "@ui/components/NewProjectModal";
@@ -79,7 +80,7 @@ function SingleProjectView() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 pb-12">
-      <ProjectSection
+      <ProjectRepos
         project={project}
         onAddRepoClick={() => setAddRepoModalOpen(true)}
       />
@@ -144,7 +145,10 @@ function App() {
         <div className="min-h-0 flex-1 overflow-y-scroll p-6">
           <Routes>
             <Route path="/" element={<AllProjectsView />} />
-            <Route path="/projects/:projectId" element={<SingleProjectView />} />
+            <Route
+              path="/projects/:projectId"
+              element={<SingleProjectView />}
+            />
           </Routes>
         </div>
 

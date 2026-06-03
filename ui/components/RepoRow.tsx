@@ -33,7 +33,7 @@ export function RepoRow(props: Readonly<Props>) {
 
   return (
     <div className={clsx("flex items-center gap-4 p-4", className)} {...rest}>
-      <div className="flex min-w-48 items-center gap-4">
+      <div className="flex min-w-48 flex-1 items-center gap-4">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-mauve/15 text-mauve">
           <Icon name="folder_code" size={24} />
         </div>
@@ -48,18 +48,28 @@ export function RepoRow(props: Readonly<Props>) {
         </div>
       </div>
 
-      <div className="flex flex-1 gap-2">
-        {repo.error && <span className="badge badge-error">err</span>}
+      <div className="flex gap-2">
+        {repo.error && (
+          <span className="badge badge-error">
+            <Icon name="error" size={16} />
+          </span>
+        )}
         {!repo.error && repo.isClean && !repo.ahead && !repo.behind && (
           <span className="badge badge-clean">
             <Icon name="check" size={16} />
           </span>
         )}
         {repo.changed > 0 && (
-          <span className="badge badge-changed">{repo.changed} changed</span>
+          <span className="badge badge-changed">
+            <Icon name="edit" size={16} />
+            {repo.changed}
+          </span>
         )}
         {repo.staged > 0 && (
-          <span className="badge badge-staged">{repo.staged} staged</span>
+          <span className="badge badge-staged">
+            <Icon name="check_box" size={16} />
+            {repo.staged}
+          </span>
         )}
         {repo.ahead > 0 && (
           <span className="badge badge-ahead">
@@ -74,7 +84,10 @@ export function RepoRow(props: Readonly<Props>) {
           </span>
         )}
         {repo.stash > 0 && (
-          <span className="badge badge-stash">{repo.stash} stashed</span>
+          <span className="badge badge-stash">
+            <Icon name="save" size={16} />
+            {repo.stash}
+          </span>
         )}
       </div>
 

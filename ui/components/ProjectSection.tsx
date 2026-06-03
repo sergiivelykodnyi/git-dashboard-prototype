@@ -2,7 +2,7 @@ import { useState, type ComponentProps } from "react";
 import clsx from "clsx";
 import { ButtonIcon } from "@ui/components/Button";
 import { Icon } from "@ui/components/Icon";
-import { RepoRow } from "@ui/components/RepoRow";
+import { ProjectRepos } from "@ui/components/ProjectRepos";
 import { useRepos } from "@ui/hooks/useRepos";
 import { useAppStore } from "@ui/store";
 import { runProjectGitAction } from "@ui/api";
@@ -89,26 +89,7 @@ export function ProjectSection(props: Readonly<Props>) {
       </div>
 
       {/* Project Repositories */}
-      <div className="flex flex-col gap-2">
-        {project.repos.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-surface0 bg-crust/20 py-6 text-center text-xs text-subtext0 italic">
-            No repositories added to this project yet.
-            <button
-              type="button"
-              className="ml-1.5 cursor-pointer font-medium text-mauve underline hover:text-mauve/80"
-              onClick={onAddRepoClick}
-            >
-              Add one now
-            </button>
-          </div>
-        ) : (
-          <div className="divide-y divide-surface0/40">
-            {project.repos.map((r) => (
-              <RepoRow key={r.path} repo={r} projectId={project.id} />
-            ))}
-          </div>
-        )}
-      </div>
+      <ProjectRepos project={project} onAddRepoClick={onAddRepoClick} />
     </section>
   );
 }

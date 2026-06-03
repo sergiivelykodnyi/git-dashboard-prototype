@@ -1,31 +1,31 @@
 @layer components {
   /* Badges */
   .badge {
-    @apply flex rounded p-1 text-xs font-semibold;
+    @apply flex gap-1 rounded rounded-lg p-1 text-xs font-semibold;
   }
 
   .badge-clean {
-    @apply bg-green/20 text-green;
+    @apply rounded-xl bg-green/20 text-green;
   }
 
   .badge-staged {
-    @apply bg-green/20 text-green;
+    @apply bg-green/20 pr-1.5 text-green;
   }
 
   .badge-changed {
-    @apply bg-yellow/20 text-yellow;
+    @apply bg-yellow/20 pr-1.5 text-yellow;
   }
 
   .badge-ahead {
-    @apply bg-blue/20 text-blue;
+    @apply bg-blue/20 pr-1.5 text-blue;
   }
 
   .badge-behind {
-    @apply bg-peach/20 text-peach;
+    @apply bg-peach/20 pr-1.5 text-peach;
   }
 
   .badge-stash {
-    @apply bg-teal/20 text-teal;
+    @apply bg-teal/20 pr-1.5 text-teal;
   }
 
   .badge-error {
@@ -50,6 +50,6 @@
   }
 
   .file-status-unknown {
-    @apply bg-overlay0/20 text-overlay0;
+    @apply rounded-xl bg-overlay0/20 text-overlay0;
   }
 }

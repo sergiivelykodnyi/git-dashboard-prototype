@@ -1,7 +1,7 @@
 @layer components {
   /* Buttons */
   .button {
-    @apply inline-flex h-8 cursor-pointer items-center gap-1 rounded-md border-0 bg-foreground px-3 text-sm whitespace-nowrap transition-all duration-150;
+    @apply flex h-8 cursor-pointer items-center gap-1 rounded-md border-0 bg-foreground px-3 text-sm whitespace-nowrap transition-all duration-150;
   }
 
   .button:hover:not(:disabled) {
@@ -57,7 +57,7 @@
   }
 
   .button-icon {
-    @apply inline-flex size-8 cursor-pointer items-center justify-center rounded-md bg-transparent text-subtext0;
+    @apply flex size-8 cursor-pointer items-center justify-center rounded-md bg-transparent text-subtext0;
   }
 
   .button-icon:hover:not(:disabled) {
