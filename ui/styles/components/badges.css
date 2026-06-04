@@ -1,7 +1,7 @@
 @layer components {
   /* Badges */
   .badge {
-    @apply flex gap-1 rounded rounded-lg p-1 text-xs font-semibold;
+    @apply flex gap-1 rounded-lg p-1 text-xs font-semibold;
   }
 
   .badge-clean {

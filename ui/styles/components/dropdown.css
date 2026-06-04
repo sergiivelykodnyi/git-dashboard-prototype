@@ -5,7 +5,7 @@
   }
 
   .menu {
-    @apply absolute top-full right-0 z-40 mt-2 min-w-44 rounded-xl border border-surface0 bg-mantle p-1 shadow-2xl;
+    @apply z-40 mt-2 w-52 min-w-44 origin-top-right rounded-xl border border-surface0 bg-mantle p-1 shadow-2xl transition duration-100 ease-out outline-none data-closed:scale-95 data-closed:opacity-0;
   }
 
   .menu-item {
@@ -17,7 +17,7 @@
   }
 
   .menu-item .menu-item-icon {
-    @apply inline-flex shrink-0 items-center justify-center text-overlay1;
+    @apply flex shrink-0 items-center justify-center text-overlay1;
   }
 
   .menu-item-active {

@@ -5,7 +5,7 @@
   }
 
   .form-input {
-    @apply w-full rounded-lg border border-surface1 bg-background px-4 py-2 text-sm transition-colors duration-150 outline-none;
+    @apply w-full rounded-lg border border-surface1 bg-background px-4 py-2 text-sm transition-colors duration-150;
   }
 
   .form-input:focus {
@@ -17,7 +17,7 @@
   }
 
   .commit-input {
-    @apply flex-1 rounded-lg border border-surface1 bg-background px-4 py-2 font-sans text-sm transition-colors duration-150 outline-none;
+    @apply flex-1 rounded-lg border border-surface1 bg-background px-4 py-2 font-sans text-sm transition-colors duration-150;
   }
 
   .commit-input:focus {

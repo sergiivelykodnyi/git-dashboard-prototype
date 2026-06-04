@@ -17,6 +17,7 @@
     "upgrade": "npx npm-check-updates --interactive --format group"
   },
   "dependencies": {
+    "@headlessui/react": "2.2.10",
     "@tailwindcss/vite": "4.3.0",
     "axios": "1.16.0",
     "clsx": "2.1.1",

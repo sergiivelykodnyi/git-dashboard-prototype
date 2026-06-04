@@ -57,7 +57,7 @@ export function Header({
   return (
     <header
       className={clsx(
-        "sticky top-0 z-50 h-20 border-b border-surface0 bg-mantle px-6",
+        "sticky top-0 z-10 h-20 border-b border-surface0 bg-mantle px-6",
         className,
       )}
       {...rest}

@@ -244,7 +244,7 @@ export function NewProjectModal(props: Readonly<Props>) {
                 <Icon name="folder" size={15} />
               </span>
               <input
-                className="w-full rounded-lg border border-surface1 bg-crust py-2 pr-3 pl-9 text-sm text-foreground placeholder-overlay0 focus:ring-1 focus:ring-mauve focus:outline-none"
+                className="w-full rounded-lg border border-surface1 bg-crust py-2 pr-3 pl-9 text-sm text-foreground placeholder-overlay0"
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
                 placeholder="e.g. Payments Platform"
@@ -290,12 +290,12 @@ export function NewProjectModal(props: Readonly<Props>) {
                       <Icon name="database" size={14} />
                     </span>
                     <input
-                      className={`w-full rounded-lg border bg-crust/80 py-1.5 pr-3 pl-9 font-mono text-xs text-foreground placeholder-overlay0 focus:ring-1 focus:outline-none ${
+                      className={`w-full rounded-lg border bg-crust/80 py-1.5 pr-3 pl-9 font-mono text-xs text-foreground placeholder-overlay0 ${
                         row.path && !row.isValidating
                           ? row.isValid
-                            ? "border-green/30 focus:ring-green/30"
-                            : "border-red/30 focus:ring-red/30"
-                          : "border-surface1 focus:ring-mauve"
+                            ? "border-green/30"
+                            : "border-red/30"
+                          : "border-surface1"
                       }`}
                       value={row.path}
                       onChange={(e) =>
@@ -316,7 +316,7 @@ export function NewProjectModal(props: Readonly<Props>) {
                       <Icon name="label" size={14} />
                     </span>
                     <input
-                      className="w-full rounded-lg border border-surface1 bg-crust/80 py-1.5 pr-3 pl-9 text-xs text-foreground placeholder-overlay0 focus:ring-1 focus:ring-mauve focus:outline-none"
+                      className="w-full rounded-lg border border-surface1 bg-crust/80 py-1.5 pr-3 pl-9 text-xs text-foreground placeholder-overlay0"
                       value={row.name}
                       onChange={(e) =>
                         updateRow(row.id, { name: e.target.value })

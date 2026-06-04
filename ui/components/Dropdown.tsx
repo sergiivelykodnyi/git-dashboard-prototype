@@ -1,35 +1,15 @@
+import type { ComponentProps, PropsWithChildren } from "react";
 import {
-  createContext,
-  useContext,
-  useCallback,
-  useState,
-  useEffect,
-  useRef,
-  useId,
-} from "react";
-import type { ComponentProps } from "react";
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  MenuSeparator,
+} from "@headlessui/react";
 import clsx from "clsx";
-import { ButtonIcon } from "@ui/components/Button";
+// import { ButtonIcon } from "@ui/components/Button";
 import { Icon } from "@ui/components/Icon";
-
-interface DropdownContextType {
-  isOpen: boolean;
-  setOpen: (open: boolean) => void;
-  triggerId: string;
-  menuId: string;
-}
-
-const DropdownContext = createContext<DropdownContextType | null>(null);
-
-function useDropdown() {
-  const context = useContext(DropdownContext);
-  if (!context) {
-    throw new Error(
-      "Dropdown components must be rendered within a <Dropdown> provider",
-    );
-  }
-  return context;
-}
 
 interface DropdownProps extends ComponentProps<"div"> {
   triggerIcon?: string;
@@ -41,130 +21,42 @@ interface DropdownProps extends ComponentProps<"div"> {
 export function Dropdown(props: DropdownProps) {
   const {
     children,
-    className,
     triggerIcon = "more_vert",
-    triggerTitle = "More actions",
     triggerText,
     triggerClassName,
-    ...rest
   } = props;
-  const [isOpenMenu, setMenu] = useState(false);
-  const triggerId = useId();
-  const menuId = useId();
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown on Escape press or when clicking outside
-  useEffect(() => {
-    if (!isOpenMenu) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setMenu(false);
-        // Put focus back on the trigger button
-        const trigger = document.getElementById(triggerId);
-        trigger?.focus();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpenMenu, triggerId]);
+  const isTextTrigger = !!triggerText;
 
   return (
-    <DropdownContext.Provider
-      value={{
-        isOpen: isOpenMenu,
-        setOpen: setMenu,
-        triggerId,
-        menuId,
-      }}
-    >
-      <div
-        ref={containerRef}
-        className={clsx("menu-wrapper", className)}
-        {...rest}
+    <Menu>
+      <MenuButton
+        className={clsx(
+          isTextTrigger && "button button-primary",
+          !isTextTrigger && "button-icon",
+          triggerClassName,
+        )}
       >
-        {triggerText ? (
-          <button
-            id={triggerId}
-            type="button"
-            className={clsx("button button-primary", triggerClassName)}
-            aria-haspopup="menu"
-            aria-expanded={isOpenMenu}
-            aria-controls={menuId}
-            onClick={() => setMenu((isOpen) => !isOpen)}
-          >
-            <Icon name={triggerIcon} size={16} />
-            {triggerText}
-          </button>
-        ) : (
-          <ButtonIcon
-            id={triggerId}
-            icon={triggerIcon}
-            title={triggerTitle}
-            aria-haspopup="menu"
-            aria-expanded={isOpenMenu}
-            aria-controls={menuId}
-            onClick={() => setMenu((isOpen) => !isOpen)}
-          />
-        )}
-        {isOpenMenu && (
-          <>
-            <div
-              className="fixed inset-0 z-30"
-              onClick={() => setMenu(false)}
-            />
-            <DropdownMenu>{children}</DropdownMenu>
-          </>
-        )}
-      </div>
-    </DropdownContext.Provider>
+        <Icon name={triggerIcon} size={isTextTrigger ? 16 : 24} />
+        {isTextTrigger && triggerText}
+      </MenuButton>
+      <MenuItems className="menu" transition anchor="bottom end">
+        {children}
+      </MenuItems>
+    </Menu>
   );
 }
 
-export function DropdownMenu(props: ComponentProps<"ul">) {
-  const { children, className, onClick, ...rest } = props;
-  const { menuId, triggerId } = useDropdown();
+export function DropdownItem(props: PropsWithChildren) {
+  const { children } = props;
 
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLUListElement>) => {
-      e.stopPropagation();
-      onClick?.(e);
-    },
-    [onClick],
-  );
-
-  return (
-    <ul
-      id={menuId}
-      role="menu"
-      aria-labelledby={triggerId}
-      className={clsx("menu", className)}
-      onClick={handleClick}
-      {...rest}
-    >
-      {children}
-    </ul>
-  );
+  return <MenuItem>{children}</MenuItem>;
 }
 
-export function DropdownItem(props: ComponentProps<"li">) {
-  const { children, className, ...rest } = props;
-
-  return (
-    <li role="none" className={className} {...rest}>
-      {children}
-    </li>
-  );
-}
-
-export function DropdownItemSeparator(props: ComponentProps<"li">) {
+export function DropdownItemSeparator(props: ComponentProps<"div">) {
   const { className, ...rest } = props;
 
   return (
-    <li
+    <MenuSeparator
       role="separator"
       className={clsx("menu-separator", className)}
       {...rest}
@@ -177,27 +69,16 @@ interface DropdownActionProps extends ComponentProps<"button"> {
 }
 
 export function DropdownAction(props: Readonly<DropdownActionProps>) {
-  const { children, className, isActive = false, onClick, ...rest } = props;
-  const { setOpen } = useDropdown();
-
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Close dropdown when an action is clicked
-      setOpen(false);
-      onClick?.(e);
-    },
-    [onClick, setOpen],
-  );
+  const { children, className, isActive = false, ...rest } = props;
 
   return (
-    <button
+    <Button
       role="menuitem"
       className={clsx("menu-item", isActive && "menu-item-active", className)}
       type="button"
-      onClick={handleClick}
       {...rest}
     >
       {children}
-    </button>
+    </Button>
   );
 }

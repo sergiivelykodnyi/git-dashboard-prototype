@@ -231,12 +231,12 @@ export function AddRepoModal(props: Readonly<Props>) {
               </span>
               <input
                 ref={valueRef}
-                className={`w-full rounded-lg border bg-crust py-2 pr-3 pl-9 font-mono text-sm text-foreground placeholder-overlay0 focus:ring-1 focus:outline-none ${
+                className={`w-full rounded-lg border bg-crust py-2 pr-3 pl-9 font-mono text-sm text-foreground placeholder-overlay0 ${
                   folderPath && !isValidating
                     ? isValid
-                      ? "border-green/30 focus:ring-green/30"
-                      : "border-red/30 focus:ring-red/30"
-                    : "border-surface1 focus:ring-mauve"
+                      ? "border-green/30"
+                      : "border-red/30"
+                    : "border-surface1"
                 }`}
                 value={folderPath}
                 onChange={(e) => setFolderPath(e.target.value)}
@@ -261,7 +261,7 @@ export function AddRepoModal(props: Readonly<Props>) {
                 <Icon name="label" size={15} />
               </span>
               <input
-                className="w-full rounded-lg border border-surface1 bg-crust py-2 pr-3 pl-9 text-sm text-foreground placeholder-overlay0 focus:ring-1 focus:ring-mauve focus:outline-none"
+                className="w-full rounded-lg border border-surface1 bg-crust py-2 pr-3 pl-9 text-sm text-foreground placeholder-overlay0"
                 value={repoName}
                 onChange={(e) => setRepoName(e.target.value)}
                 placeholder="Name of repository"

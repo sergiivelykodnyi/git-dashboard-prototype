@@ -36,7 +36,7 @@ export function LogOutput(props: Readonly<ComponentProps<"div">>) {
       {/* Drawer Handle */}
       <button
         type="button"
-        className="flex w-full cursor-pointer items-center gap-3 px-6 py-3 text-left transition-colors duration-150 hover:bg-surface0/50 focus:outline-none"
+        className="flex w-full cursor-pointer items-center gap-3 px-6 py-3 text-left transition-colors duration-150 hover:bg-surface0/50"
         onClick={toggleLogOpen}
       >
         <span className="flex items-center gap-2 text-sm font-semibold text-subtext1">
