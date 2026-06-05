@@ -1,6 +1,6 @@
 import type { ComponentProps, PropsWithChildren } from "react";
 import {
-  Button,
+  Button as HeadlessButton,
   Menu,
   MenuButton,
   MenuItem,
@@ -8,7 +8,7 @@ import {
   MenuSeparator,
 } from "@headlessui/react";
 import clsx from "clsx";
-// import { ButtonIcon } from "@ui/components/Button";
+import { Button } from "@ui/components/Button";
 import { Icon } from "@ui/components/Icon";
 
 interface DropdownProps extends ComponentProps<"div"> {
@@ -29,16 +29,16 @@ export function Dropdown(props: DropdownProps) {
 
   return (
     <Menu>
-      <MenuButton
-        className={clsx(
-          isTextTrigger && "button button-primary",
-          !isTextTrigger && "button-icon",
-          triggerClassName,
-        )}
-      >
-        <Icon name={triggerIcon} size={isTextTrigger ? 16 : 24} />
-        {isTextTrigger && triggerText}
-      </MenuButton>
+      {isTextTrigger ? (
+        <MenuButton as={Button} variant="primary" className={triggerClassName}>
+          <Icon name={triggerIcon} size={16} />
+          {triggerText}
+        </MenuButton>
+      ) : (
+        <MenuButton className={clsx("button-icon", triggerClassName)}>
+          <Icon name={triggerIcon} size={24} />
+        </MenuButton>
+      )}
       <MenuItems className="menu" transition anchor="bottom end">
         {children}
       </MenuItems>
@@ -72,13 +72,13 @@ export function DropdownAction(props: Readonly<DropdownActionProps>) {
   const { children, className, isActive = false, ...rest } = props;
 
   return (
-    <Button
+    <HeadlessButton
       role="menuitem"
       className={clsx("menu-item", isActive && "menu-item-active", className)}
       type="button"
       {...rest}
     >
       {children}
-    </Button>
+    </HeadlessButton>
   );
 }

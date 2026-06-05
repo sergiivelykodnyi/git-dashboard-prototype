@@ -1,1 +1,1 @@
-export * from './ButtonIcon.tsx'
+export * from "./ButtonIcon.tsx";

@@ -3,6 +3,7 @@ import { addRepo, validateDirectory } from "@ui/api";
 import { useAppStore } from "@ui/store";
 import { toast } from "@ui/utils/toast";
 import { Icon } from "@ui/components/Icon";
+import { Button } from "@ui/components/Button";
 
 interface Props {
   onClose: () => void;
@@ -299,24 +300,15 @@ export function AddRepoModal(props: Readonly<Props>) {
             )}
           </div>
           <div className="flex shrink-0 gap-2">
-            <button
-              type="button"
-              className="button button-secondary border border-surface1 bg-surface0 hover:bg-surface1"
-              onClick={onClose}
-            >
+            <Button variant="secondary" onClick={onClose}>
               Cancel
-            </button>
-            <button
-              type="button"
-              className="button button-primary"
-              onClick={handleAdd}
-              disabled={!formValid}
-            >
+            </Button>
+            <Button variant="primary" onClick={handleAdd} disabled={!formValid}>
               {loading ? (
                 <span className="spinner border-1.5 mr-1 size-3.5 border-background border-t-transparent" />
               ) : null}
               Add repository
-            </button>
+            </Button>
           </div>
         </div>
       </div>

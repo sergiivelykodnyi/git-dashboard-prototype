@@ -2,6 +2,7 @@ import { useEffect, useRef, type ComponentProps } from "react";
 import { Icon } from "@ui/components/Icon";
 import { useAppStore } from "@ui/store";
 import clsx from "clsx";
+import { Button } from "@ui/components/Button";
 
 const typeColorMap = {
   ok: "text-green",
@@ -94,13 +95,9 @@ export function LogOutput(props: Readonly<ComponentProps<"div">>) {
             )}
           </div>
           <div className="flex justify-end px-6 pt-1 pb-2">
-            <button
-              type="button"
-              className="button button-secondary"
-              onClick={clearLogs}
-            >
+            <Button variant="secondary" onClick={clearLogs}>
               Clear
-            </button>
+            </Button>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { saveConfig, getConfig, validateDirectory } from "@ui/api";
 import { toast } from "@ui/utils/toast";
 import { Icon } from "@ui/components/Icon";
 import type { ProjectConfig } from "@ui/types";
+import { Button } from "@ui/components/Button";
 
 interface Props {
   onClose: () => void;
@@ -360,16 +361,11 @@ export function NewProjectModal(props: Readonly<Props>) {
             </span>
           </div>
           <div className="flex gap-2">
-            <button
-              type="button"
-              className="button button-secondary border border-surface1 bg-surface0 hover:bg-surface1"
-              onClick={onClose}
-            >
+            <Button variant="secondary" onClick={onClose}>
               Cancel
-            </button>
-            <button
-              type="button"
-              className="button button-primary"
+            </Button>
+            <Button
+              variant="primary"
               onClick={handleCreate}
               disabled={!formValid}
             >
@@ -377,7 +373,7 @@ export function NewProjectModal(props: Readonly<Props>) {
                 <span className="spinner border-1.5 mr-1 size-3.5 border-background border-t-transparent" />
               ) : null}
               Create project
-            </button>
+            </Button>
           </div>
         </div>
       </div>

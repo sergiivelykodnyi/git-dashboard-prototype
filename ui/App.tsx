@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Routes, Route, useParams } from "react-router-dom";
+import { Button } from "@ui/components/Button";
 import { Icon } from "@ui/components/Icon";
 import { Header } from "@ui/components/Header";
 import { Sidebar } from "@ui/components/Sidebar";
@@ -26,13 +27,9 @@ function NoProjectsYetView() {
         Create a project and add repositories to get started.
       </p>
       <div className="mt-5 flex justify-center gap-3">
-        <button
-          type="button"
-          className="button button-primary"
-          onClick={() => setNewProjectModalOpen(true)}
-        >
+        <Button variant="primary" onClick={() => setNewProjectModalOpen(true)}>
           <Icon name="create_new_folder" size={16} /> Create project
-        </button>
+        </Button>
       </div>
     </div>
   );
