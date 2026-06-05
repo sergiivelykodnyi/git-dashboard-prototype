@@ -1,7 +1,8 @@
 .icon {
+  user-select: none;
+
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  user-select: none;
 }

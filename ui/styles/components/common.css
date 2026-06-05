@@ -2,8 +2,10 @@
   /* Spinner */
   .spinner {
     @apply inline-block h-4 w-4 rounded-full border-2 border-transparent border-t-current;
+
     animation: spin 0.6s linear infinite;
   }
+
   .spin {
     animation: spin 0.6s linear infinite;
   }

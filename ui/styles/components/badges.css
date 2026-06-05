@@ -33,19 +33,19 @@
   }
 
   /* File Status */
-  .file-status-M {
+  .file-status-m {
     @apply bg-yellow/20 text-yellow;
   }
 
-  .file-status-A {
+  .file-status-a {
     @apply bg-green/20 text-green;
   }
 
-  .file-status-D {
+  .file-status-d {
     @apply bg-red/20 text-red;
   }
 
-  .file-status-R {
+  .file-status-r {
     @apply bg-blue/20 text-blue;
   }
 

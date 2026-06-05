@@ -7,10 +7,10 @@ interface Props extends ComponentProps<"div"> {
 }
 
 const statusClass: Record<string, string> = {
-  M: "file-status-M",
-  A: "file-status-A",
-  D: "file-status-D",
-  R: "file-status-R",
+  M: "file-status-m",
+  A: "file-status-a",
+  D: "file-status-d",
+  R: "file-status-r",
   "?": "file-status-unknown",
   " ": "file-status-unknown",
 };

@@ -1,15 +1,18 @@
 .button-icon {
-  display: flex;
   cursor: pointer;
+
+  display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  background-color: transparent;
-  color: var(--subtext0);
-  outline: none;
-  color: var(--subtext0);
+
   width: 32px;
   height: 32px;
+  border-radius: 6px;
+
+  color: var(--subtext0);
+
+  background-color: transparent;
+  outline: none;
 }
 
 .button-icon:hover:not(:disabled) {

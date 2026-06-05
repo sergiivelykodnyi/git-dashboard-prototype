@@ -7,7 +7,9 @@
     "design": "npx browser-sync design -w --port 4000 --no-ui --host design.git-dashboard.localhost --no-open --no-inject-changes",
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint . --fix",
+    "eslint": "eslint . --fix",
+    "stylelint": "stylelint ui/**/*.css --fix",
+    "lint": "npm run eslint && npm run stylelint",
     "preview": "vite preview",
     "server": "tsx server/index.ts",
     "dev:all": "concurrently \"npm run dev\" \"npm run server\"",
@@ -46,10 +48,21 @@
     "globals": "17.6.0",
     "prettier": "3.8.3",
     "prettier-plugin-tailwindcss": "0.8.0",
+    "stylelint": "17.12.0",
+    "stylelint-config-clean-order": "10.0.0",
+    "stylelint-config-css-modules": "4.6.0",
+    "stylelint-config-standard": "40.0.0",
+    "stylelint-config-tailwindcss": "1.0.1",
+    "stylelint-order": "8.1.1",
     "tsx": "4.21.0",
     "typescript": "6.0.3",
     "typescript-eslint": "8.59.2",
     "vite": "8.0.11",
-    "vite-plugin-typed-css-modules": "^0.5.3"
+    "vite-plugin-stylelint": "6.1.0",
+    "vite-plugin-typed-css-modules": "0.5.3"
+  },
+  "allowScripts": {
+    "esbuild@0.27.7": true,
+    "fsevents@2.3.3": true
   }
 }
