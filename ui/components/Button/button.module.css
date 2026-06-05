@@ -1,0 +1,53 @@
+.button {
+  display: flex;
+  height: 32px;
+  cursor: pointer;
+  align-items: center;
+  gap: 4px;
+  border-radius: 6px;
+  border: 0;
+  background-color: var(--text);
+  padding-left: 12px;
+  padding-right: 12px;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+  outline: none;
+}
+
+.button:hover:not(:disabled),
+.button[data-hover]:not([data-disabled]) {
+  background-color: var(--subtext0);
+}
+
+.button:disabled,
+.button[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.primary {
+  background-color: var(--mauve);
+  color: var(--base);
+}
+
+.primary:hover:not(:disabled),
+.primary[data-hover]:not([data-disabled]) {
+  background-color: var(--mauve);
+  opacity: 0.85;
+}
+
+.secondary {
+  background-color: var(--surface0);
+  color: var(--subtext0);
+}
+
+.secondary:hover:not(:disabled),
+.secondary[data-hover]:not([data-disabled]) {
+  background-color: var(--surface1);
+}
+
+.secondary:disabled,
+.secondary[data-disabled] {
+  cursor: not-allowed;
+}
