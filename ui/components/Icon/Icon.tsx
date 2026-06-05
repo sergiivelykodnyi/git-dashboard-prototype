@@ -1,5 +1,6 @@
 import React, { type ComponentProps } from "react";
 import clsx from "clsx";
+import styles from "./icon.module.css";
 
 interface Props extends ComponentProps<"span"> {
   name: string;
@@ -21,7 +22,7 @@ export function Icon(props: Readonly<Props>) {
 
   return (
     <span
-      className={clsx("material-symbols-outlined icon", className)}
+      className={clsx("material-symbols-outlined", styles.icon, className)}
       style={iconStyle}
       {...rest}
     >
