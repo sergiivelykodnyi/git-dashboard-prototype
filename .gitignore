@@ -2,3 +2,5 @@ node_modules
 config.json
 dist
 *.tsbuildinfo
+*.css.d.ts
+.stylelintcache

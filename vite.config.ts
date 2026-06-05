@@ -21,5 +21,8 @@ export default defineConfig({
   server: {
     port: 5801,
     host: "git-dashboard.localhost",
+    watch: {
+      ignored: ["**/*.css.d.ts", "**/.stylelintcache"],
+    },
   },
 });
