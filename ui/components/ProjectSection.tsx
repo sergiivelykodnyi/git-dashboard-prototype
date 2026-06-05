@@ -1,6 +1,6 @@
 import { useState, type ComponentProps } from "react";
 import clsx from "clsx";
-import { ButtonIcon } from "@ui/components/Button";
+import { ButtonIcon } from "@ui/components/ButtonIcon";
 import { Icon } from "@ui/components/Icon";
 import { ProjectRepos } from "@ui/components/ProjectRepos";
 import { useRepos } from "@ui/hooks/useRepos";

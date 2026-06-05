@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useLocation, matchPath } from "react-router-dom";
 import { Icon } from "@ui/components/Icon";
 import { useAppStore, type ThemeMode } from "@ui/store";
-import { ButtonIcon } from "@ui/components/Button";
+import { ButtonIcon } from "@ui/components/ButtonIcon";
 import {
   Dropdown,
   DropdownItem,

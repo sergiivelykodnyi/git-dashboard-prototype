@@ -1,6 +1,7 @@
 import type { ComponentProps } from "react";
 import clsx from "clsx";
 import { Icon } from "@ui/components/Icon";
+import css from "./button-icon.module.css";
 
 interface Props extends ComponentProps<"button"> {
   icon: string;
@@ -11,7 +12,7 @@ export function ButtonIcon(props: Readonly<Props>) {
   const { className, icon, isLoading, ...rest } = props;
 
   return (
-    <button className={clsx("button-icon", className)} type="button" {...rest}>
+    <button className={clsx(css.buttonIcon, className)} type="button" {...rest}>
       {isLoading ? (
         <span className="spinner" />
       ) : (

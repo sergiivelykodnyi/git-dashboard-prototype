@@ -1,0 +1,21 @@
+.button-icon {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--subtext0);
+  outline: none;
+  color: var(--subtext0);
+  width: 32px;
+  height: 32px;
+}
+
+.button-icon:hover:not(:disabled) {
+  background-color: var(--surface0);
+}
+
+.button-icon:disabled {
+  cursor: not-allowed;
+}

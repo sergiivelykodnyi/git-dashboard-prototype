@@ -1,7 +1,7 @@
 import { type ComponentProps } from "react";
 import clsx from "clsx";
 import { Icon } from "@ui/components/Icon";
-import { ButtonIcon } from "@ui/components/Button";
+import { ButtonIcon } from "@ui/components/ButtonIcon";
 import { useAppStore } from "@ui/store";
 import { removeRepo as apiRemoveRepo } from "@ui/api";
 import { useGitAction } from "@ui/hooks/useGitAction";

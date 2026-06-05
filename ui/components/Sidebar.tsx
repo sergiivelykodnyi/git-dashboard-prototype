@@ -2,7 +2,7 @@ import { type ComponentProps } from "react";
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import { Icon } from "@ui/components/Icon";
-import { ButtonIcon } from "./Button";
+import { ButtonIcon } from "@ui/components/ButtonIcon";
 import { useAppStore } from "@ui/store";
 
 export function Sidebar(props: ComponentProps<"aside">) {
