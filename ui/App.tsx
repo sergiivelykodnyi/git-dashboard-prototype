@@ -1,91 +1,16 @@
 import { useState } from "react";
-import { Routes, Route, useParams } from "react-router-dom";
-import { Button } from "@ui/components/Button";
-import { Icon } from "@ui/components/Icon";
+import { Routes, Route } from "react-router-dom";
 import { Header } from "@ui/components/Header";
 import { Sidebar } from "@ui/components/Sidebar";
-import { ProjectSection } from "@ui/components/ProjectSection";
-import { ProjectRepos } from "@ui/components/ProjectRepos";
 import { LogOutput } from "@ui/components/LogOutput";
 import { AddRepoModal } from "@ui/components/AddRepoModal";
 import { NewProjectModal } from "@ui/components/NewProjectModal";
 import { ToastContainer } from "@ui/components/Toast";
 import { useRepos } from "@ui/hooks/useRepos";
 import { useServices } from "@ui/hooks/useServices";
+import { ProjectsPage } from "@ui/pages/ProjectsPage";
+import { ProjectPage } from "@ui/pages/ProjectPage";
 import { observer } from "mobx-react-lite";
-
-const NoProjectsYetView = observer(function NoProjectsYetView() {
-  const { appService } = useServices();
-  return (
-    <div className="mx-auto max-w-7xl pt-16 text-center text-overlay0">
-      <Icon name="folder" size={56} className="text-mauve/40" />
-      <h2 className="mt-2 text-2xl font-medium text-subtext0">
-        No projects yet
-      </h2>
-      <p className="mt-1">
-        Create a project and add repositories to get started.
-      </p>
-      <div className="mt-5 flex justify-center gap-3">
-        <Button
-          variant="primary"
-          onClick={() => appService.setNewProjectModalOpen(true)}
-        >
-          <Icon name="create_new_folder" size={16} /> Create project
-        </Button>
-      </div>
-    </div>
-  );
-});
-
-const AllProjectsView = observer(function AllProjectsView() {
-  const { appService } = useServices();
-
-  if (appService.projects.length === 0) {
-    return <NoProjectsYetView />;
-  }
-
-  return (
-    <div className="mx-auto max-w-7xl space-y-8 pb-12">
-      {appService.projects.map((project) => (
-        <ProjectSection
-          key={project.id}
-          project={project}
-          onAddRepoClick={() => appService.setAddRepoModalOpen(true)}
-        />
-      ))}
-    </div>
-  );
-});
-
-const SingleProjectView = observer(function SingleProjectView() {
-  const { projectId } = useParams<{ projectId: string }>();
-  const { appService } = useServices();
-
-  const project = appService.projects.find((p) => p.id === projectId);
-
-  if (!project) {
-    return (
-      <div className="mx-auto max-w-7xl pt-16 text-center text-overlay0">
-        <Icon name="folder" size={56} className="text-mauve/40" />
-        <h2 className="mt-2 text-2xl font-medium text-subtext0">
-          Project not found
-        </h2>
-        <p className="mt-1">
-          The project you are looking for does not exist or has been deleted.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="mx-auto max-w-7xl space-y-8 pb-12">
-      <ProjectRepos
-        project={project}
-        onAddRepoClick={() => appService.setAddRepoModalOpen(true)}
-      />
-    </div>
-  );
-});
 
 const App = observer(function App() {
   const [refreshing, setRefreshing] = useState(false);
@@ -133,10 +58,10 @@ const App = observer(function App() {
 
         <div className="min-h-0 flex-1 overflow-y-scroll p-6">
           <Routes>
-            <Route path="/" element={<AllProjectsView />} />
+            <Route path="/" element={<ProjectsPage />} />
             <Route
               path="/projects/:projectId"
-              element={<SingleProjectView />}
+              element={<ProjectPage />}
             />
           </Routes>
         </div>
