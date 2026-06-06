@@ -225,28 +225,45 @@ export const AddRepoModal = observer(function AddRepoModal(props: Readonly<Props
             <label className="text-xs font-medium text-subtext0">
               Folder path
             </label>
-            <div className="relative flex items-center">
-              <span className="absolute left-3 text-subtext0">
-                <Icon name="database" size={15} />
-              </span>
-              <input
-                ref={valueRef}
-                className={`w-full rounded-lg border bg-crust py-2 pr-3 pl-9 font-mono text-sm text-foreground placeholder-overlay0 ${
-                  folderPath && !isValidating
-                    ? isValid
-                      ? "border-green/30"
-                      : "border-red/30"
-                    : "border-surface1"
-                }`}
-                value={folderPath}
-                onChange={(e) => setFolderPath(e.target.value)}
-                placeholder="/Users/you/code/my-project"
-                autoFocus
-              />
-              {isValidating && (
-                <span className="absolute right-3 flex h-4 w-4 items-center justify-center">
-                  <span className="spinner border-1.5 size-3.5 border-mauve border-t-transparent" />
+            <div className="flex gap-2">
+              <div className="relative flex-1 flex items-center">
+                <span className="absolute left-3 text-subtext0">
+                  <Icon name="database" size={15} />
                 </span>
+                <input
+                  ref={valueRef}
+                  className={`w-full rounded-lg border bg-crust py-2 pr-3 pl-9 font-mono text-sm text-foreground placeholder-overlay0 ${
+                    folderPath && !isValidating
+                      ? isValid
+                        ? "border-green/30"
+                        : "border-red/30"
+                      : "border-surface1"
+                  }`}
+                  value={folderPath}
+                  onChange={(e) => setFolderPath(e.target.value)}
+                  placeholder="/Users/you/code/my-project"
+                  autoFocus
+                />
+                {isValidating && (
+                  <span className="absolute right-3 flex h-4 w-4 items-center justify-center">
+                    <span className="spinner border-1.5 size-3.5 border-mauve border-t-transparent" />
+                  </span>
+                )}
+              </div>
+              {window.electronAPI && (
+                <Button
+                  variant="secondary"
+                  className="px-3 shrink-0"
+                  type="button"
+                  onClick={async () => {
+                    const path = await window.electronAPI.system.selectDirectory();
+                    if (path) {
+                      setFolderPath(path);
+                    }
+                  }}
+                >
+                  Browse...
+                </Button>
               )}
             </div>
           </div>

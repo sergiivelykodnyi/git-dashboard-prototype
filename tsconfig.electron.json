@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "noEmit": true
+    "noEmit": true,
   },
-  "include": ["server", "shared"]
+  "include": ["electron", "shared", "public/icons"],
 }

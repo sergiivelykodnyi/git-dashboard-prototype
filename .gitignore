@@ -1,6 +1,8 @@
-node_modules
-config.json
-dist
-*.tsbuildinfo
 *.css.d.ts
+*.tsbuildinfo
 .stylelintcache
+config.json
+dist-electron
+dist-ui
+node_modules
+release

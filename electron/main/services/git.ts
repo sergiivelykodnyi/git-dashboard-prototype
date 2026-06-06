@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { simpleGit } from "simple-git";
-import { RepoStatus } from "../../shared/types.js";
+import { RepoStatus } from "../../../shared/types.js";
 
 export function isGitRepo(dir: string): boolean {
   return fs.existsSync(path.join(dir, ".git"));

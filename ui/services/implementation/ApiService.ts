@@ -1,4 +1,3 @@
-import axios from "axios";
 import type { IApiService } from "@ui/services/interfaces/IApiService";
 import type {
   Repo,
@@ -7,19 +6,22 @@ import type {
   ProjectWithStatus,
   ProjectConfig,
 } from "@ui/types";
+import type { IElectronAPI } from "@shared/types";
+
+declare global {
+  interface Window {
+    electronAPI: IElectronAPI;
+  }
+}
 
 export class ApiService implements IApiService {
-  private api = axios.create({
-    baseURL: "http://localhost:5800/api",
-    timeout: 30000,
-  });
-
   fetchRepos(): Promise<ProjectWithStatus[]> {
-    return this.api.get("/projects/status").then((r) => r.data);
+    // Cast is fine because types are structurally compatible
+    return window.electronAPI.projects.getStatus() as unknown as Promise<ProjectWithStatus[]>;
   }
 
   fetchRepoStatus(path: string): Promise<Repo> {
-    return this.api.get("/repos/status", { params: { path } }).then((r) => r.data);
+    return window.electronAPI.git.getStatus(path) as unknown as Promise<Repo>;
   }
 
   runGitAction(
@@ -27,7 +29,7 @@ export class ApiService implements IApiService {
     action: GitAction,
     message?: string,
   ): Promise<GitActionResult> {
-    return this.api.post("/repos/git/execute", { path, action, message }).then((r) => r.data);
+    return window.electronAPI.git.execute(path, action, message) as unknown as Promise<GitActionResult>;
   }
 
   runProjectGitAction(
@@ -35,16 +37,14 @@ export class ApiService implements IApiService {
     action: GitAction,
     message?: string,
   ): Promise<GitActionResult> {
-    return this.api
-      .post(`/projects/${projectId}/git/execute`, { action, message })
-      .then((r) => r.data);
+    return window.electronAPI.git.executeProject(projectId, action, message) as unknown as Promise<GitActionResult>;
   }
 
   runAllGitAction(
     action: GitAction,
     message?: string,
   ): Promise<GitActionResult> {
-    return this.api.post("/repos/git/execute-all", { action, message }).then((r) => r.data);
+    return window.electronAPI.git.executeAll(action, message) as unknown as Promise<GitActionResult>;
   }
 
   addRepo(
@@ -52,7 +52,7 @@ export class ApiService implements IApiService {
     name: string,
     path: string,
   ): Promise<{ ok: boolean; error?: string }> {
-    return this.api.post(`/projects/${projectId}/repos`, { name, path }).then((r) => r.data);
+    return window.electronAPI.projects.addRepo(projectId, name, path);
   }
 
   removeRepo(
@@ -60,17 +60,15 @@ export class ApiService implements IApiService {
     projectId?: string,
   ): Promise<{ ok: boolean }> {
     if (!projectId) return Promise.reject(new Error("projectId required"));
-    return this.api
-      .delete(`/projects/${projectId}/repos`, { data: { path } })
-      .then((r) => r.data);
+    return window.electronAPI.projects.removeRepo(projectId, path);
   }
 
   getConfig(): Promise<ProjectConfig[]> {
-    return this.api.get("/projects").then((r) => r.data);
+    return window.electronAPI.projects.load();
   }
 
   saveConfig(config: ProjectConfig[]): Promise<{ ok: boolean }> {
-    return this.api.post("/projects", config).then((r) => r.data);
+    return window.electronAPI.projects.save(config);
   }
 
   validateDirectory(
@@ -91,8 +89,7 @@ export class ApiService implements IApiService {
       });
     }
 
-    return this.api.get("/repos/validate", { params: { path: trimmed } }).then((r) => {
-      const isValid = r.data === true;
+    return window.electronAPI.git.validate(trimmed).then((isValid) => {
       let derivedName: string | undefined;
       if (isValid && trimmed) {
         const s = trimmed.replace(/\.git$/i, "").replace(/[/\\\\]+$/, "");

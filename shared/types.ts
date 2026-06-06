@@ -42,3 +42,35 @@ export interface ProjectWithStatus {
   name: string;
   repos: RepoStatus[];
 }
+
+export interface IElectronAPI {
+  projects: {
+    load: () => Promise<ProjectConfig[]>;
+    save: (config: ProjectConfig[]) => Promise<{ ok: boolean }>;
+    addRepo: (projectId: string, name: string, path: string) => Promise<{ ok: boolean; error?: string }>;
+    removeRepo: (projectId: string, path: string) => Promise<{ ok: boolean }>;
+    getStatus: () => Promise<ProjectWithStatus[]>;
+  };
+  git: {
+    execute: (
+      path: string,
+      action: string,
+      message?: string,
+    ) => Promise<{ success: boolean; result: string; status?: RepoStatus }>;
+    executeProject: (
+      projectId: string,
+      action: string,
+      message?: string,
+    ) => Promise<{ success: boolean; result: string }>;
+    executeAll: (
+      action: string,
+      message?: string,
+    ) => Promise<{ success: boolean; result: string }>;
+    validate: (path: string) => Promise<boolean>;
+    getStatus: (path: string) => Promise<RepoStatus>;
+  };
+  system: {
+    selectDirectory: () => Promise<string | null>;
+  };
+}
+

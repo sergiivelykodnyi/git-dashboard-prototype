@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist-electron/main/index.js",
   "scripts": {
     "design": "npx browser-sync design -w --port 4000 --no-ui --host design.git-dashboard.localhost --no-open --no-inject-changes",
     "dev": "vite",
@@ -11,8 +12,7 @@
     "stylelint": "stylelint ui/**/*.css --fix",
     "lint": "npm run eslint && npm run stylelint",
     "preview": "vite preview",
-    "server": "tsx server/index.ts",
-    "dev:all": "concurrently \"npm run dev\" \"npm run server\"",
+    "electron:build": "npm run build && electron-builder",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "update": "npx npm-check-updates --format group",
@@ -43,6 +43,8 @@
     "@types/react-router-dom": "5.3.3",
     "@vitejs/plugin-react": "6.0.1",
     "concurrently": "9.2.1",
+    "electron": "^42.3.0",
+    "electron-builder": "^26.12.1",
     "eslint": "10.3.0",
     "eslint-plugin-react-hooks": "7.1.1",
     "eslint-plugin-react-refresh": "0.5.2",
@@ -59,11 +61,30 @@
     "typescript": "6.0.3",
     "typescript-eslint": "8.59.2",
     "vite": "8.0.11",
+    "vite-plugin-electron": "^0.29.1",
     "vite-plugin-stylelint": "6.1.0",
     "vite-plugin-typed-css-modules": "0.5.3"
   },
   "allowScripts": {
     "esbuild@0.27.7": true,
-    "fsevents@2.3.3": true
+    "fsevents@2.3.3": true,
+    "electron": true
+  },
+  "build": {
+    "appId": "com.gitdashboard.app",
+    "productName": "Git Dashboard",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist-ui/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.developer-tools",
+      "icon": "public/icons/icon.png"
+    }
   }
 }
