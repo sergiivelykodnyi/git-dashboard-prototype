@@ -14,6 +14,7 @@ import { useRepos } from "@ui/hooks/useRepos";
 import { useAppStore } from "@ui/store";
 import { runAllGitAction } from "@ui/api";
 import { toast } from "@ui/utils/toast";
+import { useServices } from "@ui/context/ServicesContext";
 
 function NoProjectsYetView() {
   const { setNewProjectModalOpen } = useAppStore();
@@ -88,6 +89,9 @@ function SingleProjectView() {
 function App() {
   const [refreshing, setRefreshing] = useState(false);
   const [fetching, setFetching] = useState(false);
+  const { appService } = useServices();
+
+  console.log(appService);
 
   const { refresh } = useRepos();
   const {
