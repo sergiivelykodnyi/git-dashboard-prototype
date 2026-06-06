@@ -2,13 +2,14 @@ import { type ComponentProps } from "react";
 import clsx from "clsx";
 import { RepoRow } from "@ui/components/RepoRow";
 import type { ProjectWithStatus } from "@ui/types";
+import { observer } from "mobx-react-lite";
 
 interface Props extends ComponentProps<"div"> {
   project: ProjectWithStatus;
   onAddRepoClick: () => void;
 }
 
-export function ProjectRepos(props: Readonly<Props>) {
+export const ProjectRepos = observer(function ProjectRepos(props: Readonly<Props>) {
   const { project, onAddRepoClick, className, ...rest } = props;
 
   return (
@@ -33,4 +34,4 @@ export function ProjectRepos(props: Readonly<Props>) {
       )}
     </div>
   );
-}
+});

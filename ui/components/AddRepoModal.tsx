@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { addRepo, validateDirectory } from "@ui/api";
-import { useAppStore } from "@ui/store";
+import { useServices } from "@ui/context/ServicesContext";
+import { observer } from "mobx-react-lite";
 import { toast } from "@ui/utils/toast";
 import { Icon } from "@ui/components/Icon";
 import { Button } from "@ui/components/Button";
@@ -20,12 +20,12 @@ function deriveName(src: string): string {
   return (parts[parts.length - 1] || "").trim();
 }
 
-export function AddRepoModal(props: Readonly<Props>) {
+export const AddRepoModal = observer(function AddRepoModal(props: Readonly<Props>) {
   const { onClose, onAdded } = props;
-  const { projects } = useAppStore();
+  const { appService } = useServices();
 
   const [selectedProjectId, setSelectedProjectId] = useState(
-    projects[0]?.id || "",
+    appService.projects[0]?.id || "",
   );
   const [folderPath, setFolderPath] = useState("");
   const [repoName, setRepoName] = useState("");
@@ -65,7 +65,7 @@ export function AddRepoModal(props: Readonly<Props>) {
 
       setIsValidating(true);
       try {
-        const res = await validateDirectory(cleanPath);
+        const res = await appService.validateDirectory(cleanPath);
         if (res.valid) {
           setIsValid(true);
           setValidationError(null);
@@ -89,7 +89,7 @@ export function AddRepoModal(props: Readonly<Props>) {
     }, 500); // 500ms debounce
 
     return () => clearTimeout(timer);
-  }, [folderPath]);
+  }, [folderPath, appService]);
 
   const handleAdd = async () => {
     if (!selectedProjectId) {
@@ -107,7 +107,7 @@ export function AddRepoModal(props: Readonly<Props>) {
 
     setLoading(true);
     try {
-      const res = await addRepo(
+      const res = await appService.addRepo(
         selectedProjectId,
         repoName.trim(),
         folderPath.trim(),
@@ -126,7 +126,7 @@ export function AddRepoModal(props: Readonly<Props>) {
     }
   };
 
-  const currentProject = projects.find((p) => p.id === selectedProjectId);
+  const currentProject = appService.projects.find((p) => p.id === selectedProjectId);
   const formValid =
     selectedProjectId && isValid && repoName.trim().length > 0 && !loading;
 
@@ -187,12 +187,12 @@ export function AddRepoModal(props: Readonly<Props>) {
 
               {pickerOpen && (
                 <div className="absolute top-full left-0 z-40 mt-1 max-h-48 w-full overflow-y-auto rounded-xl border border-surface1 bg-mantle p-1 shadow-2xl">
-                  {projects.length === 0 ? (
+                  {appService.projects.length === 0 ? (
                     <div className="p-3 text-center text-xs text-subtext0">
                       No projects available. Please create one first.
                     </div>
                   ) : (
-                    projects.map((p) => (
+                    appService.projects.map((p) => (
                       <button
                         key={p.id}
                         type="button"
@@ -314,4 +314,4 @@ export function AddRepoModal(props: Readonly<Props>) {
       </div>
     </div>
   );
-}
+});

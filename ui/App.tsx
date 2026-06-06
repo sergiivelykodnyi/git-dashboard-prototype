@@ -11,13 +11,12 @@ import { AddRepoModal } from "@ui/components/AddRepoModal";
 import { NewProjectModal } from "@ui/components/NewProjectModal";
 import { ToastContainer } from "@ui/components/Toast";
 import { useRepos } from "@ui/hooks/useRepos";
-import { useAppStore } from "@ui/store";
-import { runAllGitAction } from "@ui/api";
 import { toast } from "@ui/utils/toast";
 import { useServices } from "@ui/context/ServicesContext";
+import { observer } from "mobx-react-lite";
 
-function NoProjectsYetView() {
-  const { setNewProjectModalOpen } = useAppStore();
+const NoProjectsYetView = observer(function NoProjectsYetView() {
+  const { appService } = useServices();
   return (
     <div className="mx-auto max-w-7xl pt-16 text-center text-overlay0">
       <Icon name="folder" size={56} className="text-mauve/40" />
@@ -28,39 +27,39 @@ function NoProjectsYetView() {
         Create a project and add repositories to get started.
       </p>
       <div className="mt-5 flex justify-center gap-3">
-        <Button variant="primary" onClick={() => setNewProjectModalOpen(true)}>
+        <Button variant="primary" onClick={() => appService.setNewProjectModalOpen(true)}>
           <Icon name="create_new_folder" size={16} /> Create project
         </Button>
       </div>
     </div>
   );
-}
+});
 
-function AllProjectsView() {
-  const { projects, setAddRepoModalOpen } = useAppStore();
+const AllProjectsView = observer(function AllProjectsView() {
+  const { appService } = useServices();
 
-  if (projects.length === 0) {
+  if (appService.projects.length === 0) {
     return <NoProjectsYetView />;
   }
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 pb-12">
-      {projects.map((project) => (
+      {appService.projects.map((project) => (
         <ProjectSection
           key={project.id}
           project={project}
-          onAddRepoClick={() => setAddRepoModalOpen(true)}
+          onAddRepoClick={() => appService.setAddRepoModalOpen(true)}
         />
       ))}
     </div>
   );
-}
+});
 
-function SingleProjectView() {
+const SingleProjectView = observer(function SingleProjectView() {
   const { projectId } = useParams<{ projectId: string }>();
-  const { projects, setAddRepoModalOpen } = useAppStore();
+  const { appService } = useServices();
 
-  const project = projects.find((p) => p.id === projectId);
+  const project = appService.projects.find((p) => p.id === projectId);
 
   if (!project) {
     return (
@@ -80,52 +79,38 @@ function SingleProjectView() {
     <div className="mx-auto max-w-7xl space-y-8 pb-12">
       <ProjectRepos
         project={project}
-        onAddRepoClick={() => setAddRepoModalOpen(true)}
+        onAddRepoClick={() => appService.setAddRepoModalOpen(true)}
       />
     </div>
   );
-}
+});
 
-function App() {
+const App = observer(function App() {
   const [refreshing, setRefreshing] = useState(false);
   const [fetching, setFetching] = useState(false);
   const { appService } = useServices();
 
-  console.log(appService);
-
   const { refresh } = useRepos();
-  const {
-    addLog,
-    showAddRepoModal,
-    showNewProjectModal,
-    setAddRepoModalOpen,
-    setNewProjectModalOpen,
-  } = useAppStore();
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    addLog("Running refresh all…", "info");
+    appService.addLog("Running refresh all…", "info");
     await refresh();
-    addLog("Refreshed all repositories", "ok");
+    appService.addLog("Refreshed all repositories", "ok");
     setRefreshing(false);
   };
 
   const handleFetchAll = async () => {
     setFetching(true);
-    addLog("Running fetch all…", "info");
     try {
-      const data = await runAllGitAction("fetch");
+      const data = await appService.runAllGitAction("fetch");
       if (data.success) {
-        addLog(data.result, "ok");
         toast(data.result, "ok");
-        await refresh();
       } else {
-        addLog(data.result, "err");
         toast(data.result, "err");
       }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Unknown error";
-      addLog(`Failed to fetch all repositories: ${msg}`, "err");
       toast(msg, "err");
     } finally {
       setFetching(false);
@@ -157,17 +142,17 @@ function App() {
       </main>
 
       {/* Add Repository Modal */}
-      {showAddRepoModal && (
+      {appService.showAddRepoModal && (
         <AddRepoModal
-          onClose={() => setAddRepoModalOpen(false)}
+          onClose={() => appService.setAddRepoModalOpen(false)}
           onAdded={handleRefresh}
         />
       )}
 
       {/* New Project Modal */}
-      {showNewProjectModal && (
+      {appService.showNewProjectModal && (
         <NewProjectModal
-          onClose={() => setNewProjectModalOpen(false)}
+          onClose={() => appService.setNewProjectModalOpen(false)}
           onCreated={handleRefresh}
         />
       )}
@@ -175,6 +160,6 @@ function App() {
       <ToastContainer />
     </div>
   );
-}
+});
 
 export default App;

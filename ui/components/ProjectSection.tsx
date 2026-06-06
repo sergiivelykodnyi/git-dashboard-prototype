@@ -3,9 +3,8 @@ import clsx from "clsx";
 import { ButtonIcon } from "@ui/components/ButtonIcon";
 import { Icon } from "@ui/components/Icon";
 import { ProjectRepos } from "@ui/components/ProjectRepos";
-import { useRepos } from "@ui/hooks/useRepos";
-import { useAppStore } from "@ui/store";
-import { runProjectGitAction } from "@ui/api";
+import { useServices } from "@ui/context/ServicesContext";
+import { observer } from "mobx-react-lite";
 import { toast } from "@ui/utils/toast";
 import type { ProjectWithStatus } from "@ui/types";
 
@@ -14,32 +13,25 @@ interface Props extends ComponentProps<"section"> {
   onAddRepoClick: () => void;
 }
 
-export function ProjectSection(props: Readonly<Props>) {
+export const ProjectSection = observer(function ProjectSection(props: Readonly<Props>) {
   const { project, onAddRepoClick, className, ...rest } = props;
   const [loadingAction, setLoadingAction] = useState<
     "fetch" | "pull" | "push" | null
   >(null);
 
-  const { refresh } = useRepos();
-  const { addLog } = useAppStore();
+  const { appService } = useServices();
 
   const handleProjectGitAction = async (action: "fetch" | "pull" | "push") => {
     setLoadingAction(action);
-    addLog(`[Project: ${project.name}] Running git ${action}…`, "info");
     try {
-      const data = await runProjectGitAction(project.id, action);
+      const data = await appService.runProjectGitAction(project.id, action);
       if (data.success) {
-        addLog(`[Project: ${project.name}] ${data.result}`, "ok");
         toast(data.result, "ok");
-        // Refresh the whole workspace status
-        await refresh();
       } else {
-        addLog(`[Project: ${project.name}] ${data.result}`, "err");
         toast(data.result, "err");
       }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Unknown error";
-      addLog(`[Project: ${project.name}] Error: ${msg}`, "err");
       toast(msg, "err");
     } finally {
       setLoadingAction(null);
@@ -92,4 +84,4 @@ export function ProjectSection(props: Readonly<Props>) {
       <ProjectRepos project={project} onAddRepoClick={onAddRepoClick} />
     </section>
   );
-}
+});

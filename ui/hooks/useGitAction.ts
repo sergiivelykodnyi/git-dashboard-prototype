@@ -1,29 +1,15 @@
 import { useState } from "react";
-import { runGitAction } from "@ui/api";
-import { useAppStore } from "@ui/store";
+import { useServices } from "@ui/context/ServicesContext";
 import type { GitAction } from "@ui/types";
 
 export function useGitAction() {
   const [loading, setLoading] = useState<GitAction | null>(null);
-  const { updateRepo, addLog } = useAppStore();
+  const { appService } = useServices();
 
   const execute = async (path: string, action: GitAction, message?: string) => {
-    const repoName = path.split("/").pop() ?? path;
     setLoading(action);
-    addLog(`[${repoName}] Running git ${action}…`, "info");
     try {
-      const data = await runGitAction(path, action, message);
-      if (data.success) {
-        addLog(`[${repoName}] ${data.result}`, "ok");
-        if (data.status) updateRepo(data.status);
-      } else {
-        addLog(data.result, "err");
-      }
-      return data;
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Unknown error";
-      addLog(msg, "err");
-      return { success: false, result: msg };
+      return await appService.runGitAction(path, action, message);
     } finally {
       setLoading(null);
     }
@@ -31,3 +17,4 @@ export function useGitAction() {
 
   return { execute, loading };
 }
+

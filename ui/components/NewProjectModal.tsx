@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { saveConfig, getConfig, validateDirectory } from "@ui/api";
+import { useServices } from "@ui/context/ServicesContext";
+import { observer } from "mobx-react-lite";
 import { toast } from "@ui/utils/toast";
 import { Icon } from "@ui/components/Icon";
 import type { ProjectConfig } from "@ui/types";
@@ -29,8 +30,9 @@ function deriveName(src: string): string {
   return (parts[parts.length - 1] || "").trim();
 }
 
-export function NewProjectModal(props: Readonly<Props>) {
+export const NewProjectModal = observer(function NewProjectModal(props: Readonly<Props>) {
   const { onClose, onCreated } = props;
+  const { appService } = useServices();
 
   const [projectName, setProjectName] = useState("");
   const [rows, setRows] = useState<RepoRowItem[]>([
@@ -99,7 +101,7 @@ export function NewProjectModal(props: Readonly<Props>) {
 
         updateRow(row.id, { isValidating: true });
         try {
-          const res = await validateDirectory(cleanPath);
+          const res = await appService.validateDirectory(cleanPath);
           if (res.valid) {
             updateRow(row.id, {
               isValid: true,
@@ -131,7 +133,7 @@ export function NewProjectModal(props: Readonly<Props>) {
         if (item?.timer) clearTimeout(item.timer);
       });
     };
-  }, [pathsSerialized]);
+  }, [pathsSerialized, appService]);
 
   // Submit and save config
   const handleCreate = async () => {
@@ -160,7 +162,7 @@ export function NewProjectModal(props: Readonly<Props>) {
 
     setLoading(true);
     try {
-      const currentConfig = await getConfig();
+      const currentConfig = await appService.getConfig();
 
       // Kebab-case project ID with collision validation
       let kebabId = trimmedName
@@ -182,7 +184,7 @@ export function NewProjectModal(props: Readonly<Props>) {
       };
 
       const nextConfig = [...currentConfig, newProject];
-      const res = await saveConfig(nextConfig);
+      const res = await appService.saveConfig(nextConfig);
 
       if (res.ok) {
         toast(`Project "${trimmedName}" created`, "ok");
@@ -379,4 +381,4 @@ export function NewProjectModal(props: Readonly<Props>) {
       </div>
     </div>
   );
-}
+});

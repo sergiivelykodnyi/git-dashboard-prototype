@@ -1,5 +1,12 @@
 import { makeAutoObservable } from "mobx";
-import type { Repo, LogEntry, ProjectWithStatus } from "@ui/types";
+import type {
+  Repo,
+  LogEntry,
+  ProjectWithStatus,
+  GitAction,
+  GitActionResult,
+  ProjectConfig,
+} from "@ui/types";
 import type { IAppService, ThemeMode } from "@ui/services/interfaces/IAppService";
 import type { IApiService } from "@ui/services/interfaces/IApiService";
 
@@ -56,7 +63,7 @@ export class AppService implements IAppService {
 
   constructor(api: IApiService) {
     this.api = api;
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   setProjects(projects: ProjectWithStatus[]) {
@@ -74,20 +81,6 @@ export class AppService implements IAppService {
       repos: proj.repos.map((r) => (r.path === repo.path ? repo : r)),
     }));
     this.repos = this.projects.flatMap((p) => p.repos);
-  }
-
-  removeRepo(path: string, projectId?: string) {
-    this.projects = this.projects.map((proj) => {
-      if (projectId && proj.id !== projectId) return proj;
-      return {
-        ...proj,
-        repos: proj.repos.filter((r) => r.path !== path),
-      };
-    });
-    this.repos = this.projects.flatMap((p) => p.repos);
-    if (this.activeRepoPath === path) {
-      this.activeRepoPath = null;
-    }
   }
 
   setActiveRepo(path: string | null) {
@@ -129,5 +122,139 @@ export class AppService implements IAppService {
 
   setNewProjectModalOpen(open: boolean) {
     this.showNewProjectModal = open;
+  }
+
+  // API Integration Methods
+
+  async fetchRepos(): Promise<void> {
+    try {
+      const data = await this.api.fetchRepos();
+      this.setProjects(data);
+      this.setLastRefresh();
+    } catch (err) {
+      this.addLog("Cannot connect to server — is it running?", "err");
+      throw err;
+    }
+  }
+
+  async runGitAction(
+    path: string,
+    action: GitAction,
+    message?: string,
+  ): Promise<GitActionResult> {
+    const repoName = path.split("/").pop() ?? path;
+    this.addLog(`[${repoName}] Running git ${action}…`, "info");
+    try {
+      const data = await this.api.runGitAction(path, action, message);
+      if (data.success) {
+        this.addLog(`[${repoName}] ${data.result}`, "ok");
+        if (data.status) {
+          this.updateRepo(data.status);
+        }
+      } else {
+        this.addLog(data.result, "err");
+      }
+      return data;
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Unknown error";
+      this.addLog(msg, "err");
+      return { success: false, result: msg };
+    }
+  }
+
+  async runProjectGitAction(
+    projectId: string,
+    action: GitAction,
+    message?: string,
+  ): Promise<GitActionResult> {
+    const project = this.projects.find((p) => p.id === projectId);
+    const projName = project ? project.name : projectId;
+    this.addLog(`[Project: ${projName}] Running git ${action}…`, "info");
+    try {
+      const data = await this.api.runProjectGitAction(projectId, action, message);
+      if (data.success) {
+        this.addLog(`[Project: ${projName}] ${data.result}`, "ok");
+        await this.fetchRepos();
+      } else {
+        this.addLog(`[Project: ${projName}] ${data.result}`, "err");
+      }
+      return data;
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Unknown error";
+      this.addLog(`[Project: ${projName}] Error: ${msg}`, "err");
+      return { success: false, result: msg };
+    }
+  }
+
+  async runAllGitAction(
+    action: GitAction,
+    message?: string,
+  ): Promise<GitActionResult> {
+    this.addLog("Running fetch all…", "info");
+    try {
+      const data = await this.api.runAllGitAction(action, message);
+      if (data.success) {
+        this.addLog(data.result, "ok");
+        await this.fetchRepos();
+      } else {
+        this.addLog(data.result, "err");
+      }
+      return data;
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Unknown error";
+      this.addLog(`Failed to fetch all repositories: ${msg}`, "err");
+      return { success: false, result: msg };
+    }
+  }
+
+  async addRepo(
+    projectId: string,
+    name: string,
+    path: string,
+  ): Promise<{ ok: boolean; error?: string }> {
+    const res = await this.api.addRepo(projectId, name, path);
+    if (res.ok) {
+      await this.fetchRepos();
+    }
+    return res;
+  }
+
+  async removeRepo(
+    path: string,
+    projectId?: string,
+  ): Promise<{ ok: boolean }> {
+    const res = await this.api.removeRepo(path, projectId);
+    if (res.ok) {
+      this.projects = this.projects.map((proj) => {
+        if (projectId && proj.id !== projectId) return proj;
+        return {
+          ...proj,
+          repos: proj.repos.filter((r) => r.path !== path),
+        };
+      });
+      this.repos = this.projects.flatMap((p) => p.repos);
+      if (this.activeRepoPath === path) {
+        this.activeRepoPath = null;
+      }
+    }
+    return res;
+  }
+
+  getConfig(): Promise<ProjectConfig[]> {
+    return this.api.getConfig();
+  }
+
+  async saveConfig(config: ProjectConfig[]): Promise<{ ok: boolean }> {
+    const res = await this.api.saveConfig(config);
+    if (res.ok) {
+      await this.fetchRepos();
+    }
+    return res;
+  }
+
+  validateDirectory(
+    path: string,
+  ): Promise<{ valid: boolean; name?: string; error?: string }> {
+    return this.api.validateDirectory(path);
   }
 }

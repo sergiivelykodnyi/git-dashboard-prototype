@@ -2,7 +2,9 @@ import { type ComponentProps } from "react";
 import clsx from "clsx";
 import { useLocation, matchPath } from "react-router-dom";
 import { Icon } from "@ui/components/Icon";
-import { useAppStore, type ThemeMode } from "@ui/store";
+import { useServices } from "@ui/context/ServicesContext";
+import type { ThemeMode } from "@ui/services/interfaces/IAppService";
+import { observer } from "mobx-react-lite";
 import { ButtonIcon } from "@ui/components/ButtonIcon";
 import {
   Dropdown,
@@ -24,7 +26,7 @@ interface Props extends ComponentProps<"header"> {
   fetching: boolean;
 }
 
-export function Header({
+export const Header = observer(function Header({
   onRefresh,
   refreshing,
   onFetchAll,
@@ -36,22 +38,14 @@ export function Header({
   const match = matchPath({ path: "/projects/:projectId" }, location.pathname);
   const projectId = match?.params.projectId;
 
-  const projects = useAppStore((state) => state.projects);
-  const repos = useAppStore((state) => state.repos);
-  const lastRefresh = useAppStore((state) => state.lastRefresh);
-  const themeMode = useAppStore((state) => state.themeMode);
-  const setThemeMode = useAppStore((state) => state.setThemeMode);
-  const setAddRepoModalOpen = useAppStore((state) => state.setAddRepoModalOpen);
-  const setNewProjectModalOpen = useAppStore(
-    (state) => state.setNewProjectModalOpen,
-  );
+  const { appService } = useServices();
 
   const currentProject = projectId
-    ? projects.find((p) => p.id === projectId)
+    ? appService.projects.find((p) => p.id === projectId)
     : null;
   const title = currentProject ? currentProject.name : "All repositories";
   const reposCount =
-    title === "All repositories" ? repos.length : currentProject?.repos.length;
+    title === "All repositories" ? appService.repos.length : currentProject?.repos.length;
   const isAllRepos = title === "All repositories";
 
   return (
@@ -70,7 +64,7 @@ export function Header({
           <div className="flex items-center gap-1 text-xs text-subtext0">
             {isAllRepos ? (
               <>
-                <div>{pluralize(projects.length, "project")}</div>
+                <div>{pluralize(appService.projects.length, "project")}</div>
                 <div>•</div>
                 {typeof reposCount === "number" && (
                   <div>
@@ -86,19 +80,19 @@ export function Header({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {lastRefresh && (
+          {appService.lastRefresh && (
             <span className="px-2 py-1 text-xs text-overlay0">
-              Updated {lastRefresh.toLocaleTimeString()}
+              Updated {appService.lastRefresh.toLocaleTimeString()}
             </span>
           )}
           <Dropdown
-            triggerIcon={themeIcons[themeMode]}
+            triggerIcon={themeIcons[appService.themeMode]}
             triggerTitle="Switch theme"
           >
             <DropdownItem>
               <DropdownAction
-                isActive={themeMode === "system"}
-                onClick={() => setThemeMode("system")}
+                isActive={appService.themeMode === "system"}
+                onClick={() => appService.setThemeMode("system")}
               >
                 <Icon name="contrast" className="menu-item-icon" size={16} />
                 System
@@ -106,8 +100,8 @@ export function Header({
             </DropdownItem>
             <DropdownItem>
               <DropdownAction
-                isActive={themeMode === "dark"}
-                onClick={() => setThemeMode("dark")}
+                isActive={appService.themeMode === "dark"}
+                onClick={() => appService.setThemeMode("dark")}
               >
                 <Icon name="dark_mode" className="menu-item-icon" size={16} />
                 Dark
@@ -115,8 +109,8 @@ export function Header({
             </DropdownItem>
             <DropdownItem>
               <DropdownAction
-                isActive={themeMode === "light"}
-                onClick={() => setThemeMode("light")}
+                isActive={appService.themeMode === "light"}
+                onClick={() => appService.setThemeMode("light")}
               >
                 <Icon name="light_mode" className="menu-item-icon" size={16} />
                 Light
@@ -143,7 +137,7 @@ export function Header({
             triggerClassName="ml-2"
           >
             <DropdownItem>
-              <DropdownAction onClick={() => setNewProjectModalOpen(true)}>
+              <DropdownAction onClick={() => appService.setNewProjectModalOpen(true)}>
                 <Icon
                   className="menu-item-icon"
                   name="create_new_folder"
@@ -153,7 +147,7 @@ export function Header({
               </DropdownAction>
             </DropdownItem>
             <DropdownItem>
-              <DropdownAction onClick={() => setAddRepoModalOpen(true)}>
+              <DropdownAction onClick={() => appService.setAddRepoModalOpen(true)}>
                 <Icon className="menu-item-icon" name="add_2" size={16} />
                 Add repository
               </DropdownAction>
@@ -163,4 +157,4 @@ export function Header({
       </div>
     </header>
   );
-}
+});

@@ -3,11 +3,12 @@ import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import { Icon } from "@ui/components/Icon";
 import { ButtonIcon } from "@ui/components/ButtonIcon";
-import { useAppStore } from "@ui/store";
+import { useServices } from "@ui/context/ServicesContext";
+import { observer } from "mobx-react-lite";
 
-export function Sidebar(props: ComponentProps<"aside">) {
+export const Sidebar = observer(function Sidebar(props: ComponentProps<"aside">) {
   const { className, ...rest } = props;
-  const { projects, setNewProjectModalOpen } = useAppStore();
+  const { appService } = useServices();
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     clsx(
@@ -39,12 +40,12 @@ export function Sidebar(props: ComponentProps<"aside">) {
           <ButtonIcon
             icon="add"
             title="Create project"
-            onClick={() => setNewProjectModalOpen(true)}
+            onClick={() => appService.setNewProjectModalOpen(true)}
           />
         </div>
 
         <div className="space-y-1">
-          {projects.map((project) => (
+          {appService.projects.map((project) => (
             <NavLink
               key={project.id}
               to={`/projects/${project.id}`}
@@ -54,7 +55,7 @@ export function Sidebar(props: ComponentProps<"aside">) {
               <div className="truncate">{project.name}</div>
             </NavLink>
           ))}
-          {projects.length === 0 && (
+          {appService.projects.length === 0 && (
             <div className="p-2 text-center text-xs text-overlay0 italic">
               No projects yet
             </div>
@@ -63,4 +64,4 @@ export function Sidebar(props: ComponentProps<"aside">) {
       </div>
     </aside>
   );
-}
+});

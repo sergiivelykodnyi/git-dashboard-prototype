@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ComponentProps } from "react";
 import { Icon } from "@ui/components/Icon";
-import { useAppStore } from "@ui/store";
+import { useServices } from "@ui/context/ServicesContext";
+import { observer } from "mobx-react-lite";
 import clsx from "clsx";
 import { Button } from "@ui/components/Button";
 
@@ -10,21 +11,18 @@ const typeColorMap = {
   info: "text-blue",
 } as const;
 
-export function LogOutput(props: Readonly<ComponentProps<"div">>) {
+export const LogOutput = observer(function LogOutput(props: Readonly<ComponentProps<"div">>) {
   const { className, ...rest } = props;
-  const logs = useAppStore((s) => s.logs);
-  const clearLogs = useAppStore((s) => s.clearLogs);
-  const isLogOpen = useAppStore((s) => s.isLogOpen);
-  const toggleLogOpen = useAppStore((s) => s.toggleLogOpen);
+  const { appService } = useServices();
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  const lastLog = logs[logs.length - 1];
+  const lastLog = appService.logs[appService.logs.length - 1];
 
   useEffect(() => {
-    if (isLogOpen && bodyRef.current) {
+    if (appService.isLogOpen && bodyRef.current) {
       bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
     }
-  }, [isLogOpen, logs.length]);
+  }, [appService.isLogOpen, appService.logs.length]);
 
   return (
     <div
@@ -38,14 +36,14 @@ export function LogOutput(props: Readonly<ComponentProps<"div">>) {
       <button
         type="button"
         className="flex w-full cursor-pointer items-center gap-3 px-6 py-3 text-left transition-colors duration-150 hover:bg-surface0/50"
-        onClick={toggleLogOpen}
+        onClick={appService.toggleLogOpen}
       >
         <span className="flex items-center gap-2 text-sm font-semibold text-subtext1">
           <Icon name="terminal_2" size={16} />
           Output Log
         </span>
 
-        {!isLogOpen && lastLog && (
+        {!appService.isLogOpen && lastLog && (
           <span className="flex-1 truncate font-mono text-sm text-overlay1">
             <span className="text-overlay0">{lastLog.time}</span>
             {"  "}
@@ -53,12 +51,12 @@ export function LogOutput(props: Readonly<ComponentProps<"div">>) {
           </span>
         )}
 
-        {(isLogOpen || !lastLog) && <span className="flex-1" />}
+        {(appService.isLogOpen || !lastLog) && <span className="flex-1" />}
 
         <span
           className={clsx(
             "flex text-overlay1 transition-transform duration-150",
-            isLogOpen && "rotate-180",
+            appService.isLogOpen && "rotate-180",
           )}
         >
           <Icon name="keyboard_arrow_up" size={16} />
@@ -69,7 +67,7 @@ export function LogOutput(props: Readonly<ComponentProps<"div">>) {
       <div
         className={clsx(
           "overflow-hidden transition-all duration-300 ease-in-out",
-          isLogOpen ? "h-80" : "h-0",
+          appService.isLogOpen ? "h-80" : "h-0",
         )}
       >
         <div className="flex h-full min-h-0 flex-col">
@@ -77,10 +75,10 @@ export function LogOutput(props: Readonly<ComponentProps<"div">>) {
             ref={bodyRef}
             className="flex-1 overflow-y-auto px-6 font-mono text-sm"
           >
-            {logs.length === 0 ? (
+            {appService.logs.length === 0 ? (
               <div className="text-overlay0">No activity yet.</div>
             ) : (
-              logs.map((l) => (
+              appService.logs.map((l) => (
                 <div key={l.id} className="flex gap-3">
                   <span className="shrink-0 text-overlay0 select-none">
                     {l.time}
@@ -95,7 +93,7 @@ export function LogOutput(props: Readonly<ComponentProps<"div">>) {
             )}
           </div>
           <div className="flex justify-end px-6 pt-1 pb-2">
-            <Button variant="secondary" onClick={clearLogs}>
+            <Button variant="secondary" onClick={appService.clearLogs}>
               Clear
             </Button>
           </div>
@@ -103,4 +101,4 @@ export function LogOutput(props: Readonly<ComponentProps<"div">>) {
       </div>
     </div>
   );
-}
+});

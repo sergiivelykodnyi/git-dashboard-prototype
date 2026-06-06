@@ -1,20 +1,17 @@
 import { useCallback, useEffect, useRef } from "react";
-import { fetchRepos } from "@ui/api";
-import { useAppStore } from "@ui/store";
+import { useServices } from "@ui/context/ServicesContext";
 
 export function useRepos(intervalMs = 60_000) {
-  const { setProjects, setLastRefresh, addLog } = useAppStore();
+  const { appService } = useServices();
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const refresh = useCallback(async () => {
     try {
-      const data = await fetchRepos();
-      setProjects(data);
-      setLastRefresh();
+      await appService.fetchRepos();
     } catch {
-      addLog("Cannot connect to server — is it running?", "err");
+      // appService.fetchRepos already logs errors
     }
-  }, [setProjects, setLastRefresh, addLog]);
+  }, [appService]);
 
   useEffect(() => {
     refresh();
@@ -26,3 +23,4 @@ export function useRepos(intervalMs = 60_000) {
 
   return { refresh };
 }
+

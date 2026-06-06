@@ -2,8 +2,8 @@ import { type ComponentProps } from "react";
 import clsx from "clsx";
 import { Icon } from "@ui/components/Icon";
 import { ButtonIcon } from "@ui/components/ButtonIcon";
-import { useAppStore } from "@ui/store";
-import { removeRepo as apiRemoveRepo } from "@ui/api";
+import { useServices } from "@ui/context/ServicesContext";
+import { observer } from "mobx-react-lite";
 import { useGitAction } from "@ui/hooks/useGitAction";
 import { toast } from "@ui/utils/toast";
 import type { Repo } from "@ui/types";
@@ -14,9 +14,9 @@ interface Props extends ComponentProps<"div"> {
   projectId?: string;
 }
 
-export function RepoRow(props: Readonly<Props>) {
+export const RepoRow = observer(function RepoRow(props: Readonly<Props>) {
   const { repo, projectId, className, ...rest } = props;
-  const { removeRepo } = useAppStore();
+  const { appService } = useServices();
   const { execute, loading } = useGitAction();
 
   const handleGit = async (action: "fetch" | "pull" | "push") => {
@@ -26,9 +26,12 @@ export function RepoRow(props: Readonly<Props>) {
   };
 
   const handleRemove = async () => {
-    await apiRemoveRepo(repo.path, projectId);
-    removeRepo(repo.path, projectId);
-    toast("Repository removed");
+    const res = await appService.removeRepo(repo.path, projectId);
+    if (res.ok) {
+      toast("Repository removed");
+    } else {
+      toast("Failed to remove repository", "err");
+    }
   };
 
   return (
@@ -117,4 +120,4 @@ export function RepoRow(props: Readonly<Props>) {
       </div>
     </div>
   );
-}
+});
