@@ -9,6 +9,7 @@ import type {
 } from "@ui/types";
 import type { IAppService, ThemeMode } from "@ui/services/interfaces/IAppService";
 import type { IApiService } from "@ui/services/interfaces/IApiService";
+import type { IToastService, ToastItem } from "@ui/services/interfaces/IToastService";
 
 let logId = 0;
 const STORAGE_KEY = "git-dashboard-theme";
@@ -59,11 +60,21 @@ export class AppService implements IAppService {
   showAddRepoModal: boolean = false;
   showNewProjectModal: boolean = false;
 
-  api: IApiService;
+  private api: IApiService;
+  private toastService: IToastService;
 
-  constructor(api: IApiService) {
+  constructor(api: IApiService, toastService: IToastService) {
     this.api = api;
+    this.toastService = toastService;
     makeAutoObservable(this, {}, { autoBind: true });
+  }
+
+  get toasts(): ToastItem[] {
+    return this.toastService.toasts;
+  }
+
+  showToast(msg: string, type?: "ok" | "err") {
+    this.toastService.show(msg, type);
   }
 
   setProjects(projects: ProjectWithStatus[]) {

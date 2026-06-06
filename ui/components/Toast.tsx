@@ -1,30 +1,14 @@
-import { useEffect, useState, type ComponentProps } from "react";
+import { observer } from "mobx-react-lite";
+import { useServices } from "@ui/hooks/useServices";
+import type { ComponentProps } from "react";
 import clsx from "clsx";
 import { Icon } from "@ui/components/Icon";
-import { setToastHandler } from "@ui/utils/toast";
 
-interface ToastItem {
-  id: number;
-  msg: string;
-  type: "ok" | "err";
-}
-
-let toastId = 0;
-
-export function ToastContainer(props: ComponentProps<"div">) {
+export const ToastContainer = observer(function ToastContainer(
+  props: ComponentProps<"div">,
+) {
   const { className, ...rest } = props;
-  const [toasts, setToasts] = useState<ToastItem[]>([]);
-
-  useEffect(() => {
-    setToastHandler((msg, type) => {
-      const id = toastId++;
-      setToasts((p) => [...p, { id, msg, type }]);
-      setTimeout(() => setToasts((p) => p.filter((t) => t.id !== id)), 4000);
-    });
-    return () => {
-      setToastHandler(null);
-    };
-  }, []);
+  const { appService } = useServices();
 
   return (
     <div
@@ -34,7 +18,7 @@ export function ToastContainer(props: ComponentProps<"div">) {
       )}
       {...rest}
     >
-      {toasts.map((t) => (
+      {appService.toasts.map((t) => (
         <div key={t.id} className={clsx("toast", `toast-${t.type}`)}>
           {t.type === "ok" ? (
             <Icon name="check_circle" size={16} />
@@ -46,4 +30,4 @@ export function ToastContainer(props: ComponentProps<"div">) {
       ))}
     </div>
   );
-}
+});

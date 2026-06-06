@@ -5,7 +5,6 @@ import { Icon } from "@ui/components/Icon";
 import { ProjectRepos } from "@ui/components/ProjectRepos";
 import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
-import { toast } from "@ui/utils/toast";
 import type { ProjectWithStatus } from "@ui/types";
 
 interface Props extends ComponentProps<"section"> {
@@ -26,13 +25,13 @@ export const ProjectSection = observer(function ProjectSection(props: Readonly<P
     try {
       const data = await appService.runProjectGitAction(project.id, action);
       if (data.success) {
-        toast(data.result, "ok");
+        appService.showToast(data.result, "ok");
       } else {
-        toast(data.result, "err");
+        appService.showToast(data.result, "err");
       }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Unknown error";
-      toast(msg, "err");
+      appService.showToast(msg, "err");
     } finally {
       setLoadingAction(null);
     }

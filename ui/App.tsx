@@ -11,7 +11,6 @@ import { AddRepoModal } from "@ui/components/AddRepoModal";
 import { NewProjectModal } from "@ui/components/NewProjectModal";
 import { ToastContainer } from "@ui/components/Toast";
 import { useRepos } from "@ui/hooks/useRepos";
-import { toast } from "@ui/utils/toast";
 import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
 
@@ -108,13 +107,13 @@ const App = observer(function App() {
     try {
       const data = await appService.runAllGitAction("fetch");
       if (data.success) {
-        toast(data.result, "ok");
+        appService.showToast(data.result, "ok");
       } else {
-        toast(data.result, "err");
+        appService.showToast(data.result, "err");
       }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Unknown error";
-      toast(msg, "err");
+      appService.showToast(msg, "err");
     } finally {
       setFetching(false);
     }

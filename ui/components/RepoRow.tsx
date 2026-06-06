@@ -5,7 +5,6 @@ import { ButtonIcon } from "@ui/components/ButtonIcon";
 import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
 import { useGitAction } from "@ui/hooks/useGitAction";
-import { toast } from "@ui/utils/toast";
 import type { Repo } from "@ui/types";
 import { RepoDropdowActions } from "@ui/components/RepoDropdowActions";
 
@@ -21,16 +20,16 @@ export const RepoRow = observer(function RepoRow(props: Readonly<Props>) {
 
   const handleGit = async (action: "fetch" | "pull" | "push") => {
     const result = await execute(repo.path, action);
-    if (result?.success) toast(result.result, "ok");
-    else if (result) toast(result.result, "err");
+    if (result?.success) appService.showToast(result.result, "ok");
+    else if (result) appService.showToast(result.result, "err");
   };
 
   const handleRemove = async () => {
     const res = await appService.removeRepo(repo.path, projectId);
     if (res.ok) {
-      toast("Repository removed");
+      appService.showToast("Repository removed");
     } else {
-      toast("Failed to remove repository", "err");
+      appService.showToast("Failed to remove repository", "err");
     }
   };
 

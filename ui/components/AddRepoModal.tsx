@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
-import { toast } from "@ui/utils/toast";
 import { Icon } from "@ui/components/Icon";
 import { Button } from "@ui/components/Button";
 
@@ -93,15 +92,15 @@ export const AddRepoModal = observer(function AddRepoModal(props: Readonly<Props
 
   const handleAdd = async () => {
     if (!selectedProjectId) {
-      toast("Please select a project", "err");
+      appService.showToast("Please select a project", "err");
       return;
     }
     if (!isValid) {
-      toast("Invalid git repository path", "err");
+      appService.showToast("Invalid git repository path", "err");
       return;
     }
     if (!repoName.trim()) {
-      toast("Please provide a repository name", "err");
+      appService.showToast("Please provide a repository name", "err");
       return;
     }
 
@@ -113,14 +112,14 @@ export const AddRepoModal = observer(function AddRepoModal(props: Readonly<Props
         folderPath.trim(),
       );
       if (res.ok) {
-        toast("Repository added", "ok");
+        appService.showToast("Repository added", "ok");
         onAdded();
         onClose();
       } else {
-        toast(res.error ?? "Failed to add repository", "err");
+        appService.showToast(res.error ?? "Failed to add repository", "err");
       }
     } catch {
-      toast("Server error adding repository", "err");
+      appService.showToast("Server error adding repository", "err");
     } finally {
       setLoading(false);
     }

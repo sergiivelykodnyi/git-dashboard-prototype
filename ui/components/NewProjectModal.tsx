@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
-import { toast } from "@ui/utils/toast";
 import { Icon } from "@ui/components/Icon";
 import type { ProjectConfig } from "@ui/types";
 import { Button } from "@ui/components/Button";
@@ -139,7 +138,7 @@ export const NewProjectModal = observer(function NewProjectModal(props: Readonly
   const handleCreate = async () => {
     const trimmedName = projectName.trim();
     if (!trimmedName) {
-      toast("Project name required", "err");
+      appService.showToast("Project name required", "err");
       return;
     }
 
@@ -156,7 +155,7 @@ export const NewProjectModal = observer(function NewProjectModal(props: Readonly
       (r) => r.path.trim().length > 0 && (!r.isValid || r.isValidating),
     );
     if (hasInvalid) {
-      toast("Please correct invalid repository paths", "err");
+      appService.showToast("Please correct invalid repository paths", "err");
       return;
     }
 
@@ -187,14 +186,14 @@ export const NewProjectModal = observer(function NewProjectModal(props: Readonly
       const res = await appService.saveConfig(nextConfig);
 
       if (res.ok) {
-        toast(`Project "${trimmedName}" created`, "ok");
+        appService.showToast(`Project "${trimmedName}" created`, "ok");
         onCreated();
         onClose();
       } else {
-        toast("Failed to save project", "err");
+        appService.showToast("Failed to save project", "err");
       }
     } catch {
-      toast("Server error creating project", "err");
+      appService.showToast("Server error creating project", "err");
     } finally {
       setLoading(false);
     }

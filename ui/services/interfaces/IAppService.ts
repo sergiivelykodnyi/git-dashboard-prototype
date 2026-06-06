@@ -6,6 +6,7 @@ import type {
   GitActionResult,
   ProjectConfig,
 } from "@ui/types";
+import type { ToastItem } from "@ui/services/interfaces/IToastService";
 
 export type ThemeMode = "system" | "dark" | "light";
 
@@ -19,6 +20,7 @@ export interface IAppService {
   themeMode: ThemeMode;
   showAddRepoModal: boolean;
   showNewProjectModal: boolean;
+  toasts: ToastItem[];
 
   setProjects(projects: ProjectWithStatus[]): void;
   setRepos(repos: Repo[]): void;
@@ -32,6 +34,7 @@ export interface IAppService {
   setThemeMode(mode: ThemeMode): void;
   setAddRepoModalOpen(open: boolean): void;
   setNewProjectModalOpen(open: boolean): void;
+  showToast(msg: string, type?: "ok" | "err"): void;
 
   // API Integration Methods
   fetchRepos(): Promise<void>;
@@ -44,4 +47,5 @@ export interface IAppService {
   saveConfig(config: ProjectConfig[]): Promise<{ ok: boolean }>;
   validateDirectory(path: string): Promise<{ valid: boolean; name?: string; error?: string }>;
 }
+
 
