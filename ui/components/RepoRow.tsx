@@ -2,7 +2,7 @@ import { type ComponentProps } from "react";
 import clsx from "clsx";
 import { Icon } from "@ui/components/Icon";
 import { ButtonIcon } from "@ui/components/ButtonIcon";
-import { useServices } from "@ui/context/ServicesContext";
+import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
 import { useGitAction } from "@ui/hooks/useGitAction";
 import { toast } from "@ui/utils/toast";

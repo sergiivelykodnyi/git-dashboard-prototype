@@ -12,7 +12,7 @@ import { NewProjectModal } from "@ui/components/NewProjectModal";
 import { ToastContainer } from "@ui/components/Toast";
 import { useRepos } from "@ui/hooks/useRepos";
 import { toast } from "@ui/utils/toast";
-import { useServices } from "@ui/context/ServicesContext";
+import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
 
 const NoProjectsYetView = observer(function NoProjectsYetView() {
@@ -27,7 +27,10 @@ const NoProjectsYetView = observer(function NoProjectsYetView() {
         Create a project and add repositories to get started.
       </p>
       <div className="mt-5 flex justify-center gap-3">
-        <Button variant="primary" onClick={() => appService.setNewProjectModalOpen(true)}>
+        <Button
+          variant="primary"
+          onClick={() => appService.setNewProjectModalOpen(true)}
+        >
           <Icon name="create_new_folder" size={16} /> Create project
         </Button>
       </div>
@@ -120,6 +123,7 @@ const App = observer(function App() {
   return (
     <div className="grid h-full grid-cols-[288px_1fr]">
       <Sidebar />
+
       <main className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <Header
           onRefresh={handleRefresh}

@@ -2,7 +2,7 @@ import { type ComponentProps } from "react";
 import clsx from "clsx";
 import { useLocation, matchPath } from "react-router-dom";
 import { Icon } from "@ui/components/Icon";
-import { useServices } from "@ui/context/ServicesContext";
+import { useServices } from "@ui/hooks/useServices";
 import type { ThemeMode } from "@ui/services/interfaces/IAppService";
 import { observer } from "mobx-react-lite";
 import { ButtonIcon } from "@ui/components/ButtonIcon";

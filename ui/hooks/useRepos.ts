@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
-import { useServices } from "@ui/context/ServicesContext";
+import { useServices } from "@ui/hooks/useServices";
 
 export function useRepos(intervalMs = 60_000) {
   const { appService } = useServices();
@@ -15,7 +15,9 @@ export function useRepos(intervalMs = 60_000) {
 
   useEffect(() => {
     refresh();
+
     timerRef.current = setInterval(refresh, intervalMs);
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
@@ -23,4 +25,3 @@ export function useRepos(intervalMs = 60_000) {
 
   return { refresh };
 }
-

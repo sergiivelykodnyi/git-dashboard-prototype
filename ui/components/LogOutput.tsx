@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ComponentProps } from "react";
 import { Icon } from "@ui/components/Icon";
-import { useServices } from "@ui/context/ServicesContext";
+import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
 import clsx from "clsx";
 import { Button } from "@ui/components/Button";

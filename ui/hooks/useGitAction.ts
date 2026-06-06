@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useServices } from "@ui/context/ServicesContext";
+import { useServices } from "@ui/hooks/useServices";
 import type { GitAction } from "@ui/types";
 
 export function useGitAction() {

@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import { Icon } from "@ui/components/Icon";
 import { ButtonIcon } from "@ui/components/ButtonIcon";
-import { useServices } from "@ui/context/ServicesContext";
+import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
 
 export const Sidebar = observer(function Sidebar(props: ComponentProps<"aside">) {

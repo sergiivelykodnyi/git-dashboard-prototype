@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useServices } from "@ui/context/ServicesContext";
+import { useServices } from "@ui/hooks/useServices";
 import { observer } from "mobx-react-lite";
 import { toast } from "@ui/utils/toast";
 import { Icon } from "@ui/components/Icon";
