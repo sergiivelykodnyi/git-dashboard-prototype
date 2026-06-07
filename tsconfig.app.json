@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-      "@ui/*": ["./ui/*"],
-      "@shared/*": ["./shared/*"]
+      "@ui/*": ["./src/ui/*"],
+      "@shared/*": ["./src/shared/*"]
     },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2023",
@@ -28,5 +28,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["ui", "shared"]
+  "include": ["src/ui", "src/shared"]
 }

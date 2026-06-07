@@ -13,7 +13,7 @@ function getIconPath() {
   // Only used by app.dock.setIcon() in dev (see below). The packaged .app icon
   // comes from electron-builder's mac.icon, and BrowserWindow.icon is ignored
   // on macOS, so the PNG is all we ever need at runtime.
-  return path.resolve(__dirname, "../../public/icons/icon.png");
+  return path.resolve(__dirname, "../../src/assets/icons/icon.png");
 }
 
 function createWindow() {

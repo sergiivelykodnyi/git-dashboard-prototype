@@ -13,18 +13,19 @@ export default defineConfig(({ command }) => {
   const electronSourcemap = command === "serve";
 
   return {
+    publicDir: "src/assets",
     plugins: [
       tailwindcss(),
       react(),
       typedCssModulesPlugin(),
-      stylelint({ build: true, include: ["ui/**/*.css"] }),
+      stylelint({ build: true, include: ["src/ui/**/*.css"] }),
       electron([
         {
-          entry: "electron/main/index.ts",
+          entry: "src/electron/main/index.ts",
           vite: {
             build: {
               lib: {
-                entry: "electron/main/index.ts",
+                entry: "src/electron/main/index.ts",
                 formats: ["es"],
                 fileName: () => "index.js",
               },
@@ -45,14 +46,14 @@ export default defineConfig(({ command }) => {
           },
         },
         {
-          entry: "electron/preload/index.ts",
+          entry: "src/electron/preload/index.ts",
           onstart(options) {
             options.reload();
           },
           vite: {
             build: {
               lib: {
-                entry: "electron/preload/index.ts",
+                entry: "src/electron/preload/index.ts",
                 formats: ["cjs"],
                 fileName: () => "index.cjs",
               },
@@ -68,8 +69,8 @@ export default defineConfig(({ command }) => {
     ],
     resolve: {
       alias: {
-        "@ui": fileURLToPath(new URL("./ui", import.meta.url)),
-        "@shared": fileURLToPath(new URL("./shared", import.meta.url)),
+        "@ui": fileURLToPath(new URL("./src/ui", import.meta.url)),
+        "@shared": fileURLToPath(new URL("./src/shared", import.meta.url)),
       },
     },
     build: {

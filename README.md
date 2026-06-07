@@ -55,38 +55,21 @@ Click the add icon dropdown in the header and choose:
 ├── config.json              # Saved project and repository configuration
 ├── package.json             # NPM package scripts and dependencies
 ├── tsconfig.json            # TypeScript configuration base
-├── server/                  # Node.js + Express + TS Backend
-│   ├── index.ts             # Express server entry point (default port 5800)
-│   ├── routes/
-│   │   └── api.ts           # Git operation API endpoints
-│   └── services/
-│   │   ├── config.ts        # Loads/saves settings to config.json
-│   │   └── git.ts           # Simple-git operations logic
-├── shared/                  # Code shared between frontend and backend
-│   └── types.ts             # Shared TypeScript types and interfaces
-└── ui/                      # React Frontend UI
-    ├── App.tsx              # Main App layout component
-    ├── main.tsx             # React mount entry point
-    ├── api/
-    │   └── index.ts         # Axios API requests to backend
-    ├── components/          # Reusable UI components
-    │   ├── AddRepoModal.tsx # Dialog to add a repo to a project
-    │   ├── FileList.tsx     # Modified files list component
-    │   ├── Header.tsx       # Header with global controls
-    │   ├── LogOutput.tsx    # Live terminal log console
-    │   ├── RepoRow.tsx      # Repository information and actions row
-    │   └── Toast.tsx        # Toast notification system
-    ├── hooks/               # Custom React hooks
-    │   ├── useGitAction.ts  # Runs pull/push/fetch operations
-    │   └── useRepos.ts      # Automated background repository polling
-    ├── store/
-    │   └── index.ts         # Zustand global state management
-    ├── styles/
-    │   └── tailwind.css     # Tailwind CSS 4 + Catppuccin theme configuration
-    ├── types/
-    │   └── index.ts         # Frontend-specific types
-    └── utils/
-    │   └── toast.ts         # Simple notification helper
+└── src/                     # Application source directory
+    ├── assets/              # App static assets and icons
+    ├── electron/            # Electron main and preload process code
+    │   ├── main/            # Electron main process source
+    │   └── preload/         # Electron preload scripts
+    ├── shared/              # Shared types and code
+    └── ui/                  # React UI frontend source code
+        ├── App.tsx          # Main App React component
+        ├── main.tsx         # React mount entry point
+        ├── components/      # Reusable UI components
+        ├── hooks/           # Custom React hooks
+        ├── services/        # Service layer (AppService, ApiService, etc.)
+        ├── styles/          # Tailwind CSS style configuration
+        ├── types/           # UI-specific TypeScript types
+        └── utilities/       # Utility helper functions
 ```
 
 ## Custom Port

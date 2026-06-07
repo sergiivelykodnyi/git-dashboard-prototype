@@ -10,7 +10,7 @@
     "clean": "rm -rf dist-electron dist-ui",
     "build": "npm run clean && tsc -b && vite build",
     "eslint": "eslint . --fix",
-    "stylelint": "stylelint ui/**/*.css --fix",
+    "stylelint": "stylelint src/ui/**/*.css --fix",
     "lint": "npm run eslint && npm run stylelint",
     "preview": "vite preview",
     "electron:build": "npm run build && electron-builder",
@@ -81,7 +81,7 @@
     "mac": {
       "target": "dmg",
       "category": "public.app-category.developer-tools",
-      "icon": "public/icons/icon.icns"
+      "icon": "src/assets/icons/icon.icns"
     }
   }
 }

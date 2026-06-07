@@ -12,5 +12,5 @@
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
   },
-  "include": ["electron", "shared", "public/icons"],
+  "include": ["src/electron", "src/shared", "src/assets/icons"],
 }
