@@ -10,16 +10,17 @@ const __dirname = path.dirname(__filename);
 let mainWindow: BrowserWindow | null = null;
 
 function getIconPath() {
-  return app.isPackaged
-    ? path.join(process.resourcesPath, "icon.icns")
-    : path.resolve(__dirname, "../../public/icons/icon.png");
+  // Only used by app.dock.setIcon() in dev (see below). The packaged .app icon
+  // comes from electron-builder's mac.icon, and BrowserWindow.icon is ignored
+  // on macOS, so the PNG is all we ever need at runtime.
+  return path.resolve(__dirname, "../../public/icons/icon.png");
 }
 
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 800,
-    icon: getIconPath(),
+    icon: nativeImage.createFromPath(getIconPath()),
     webPreferences: {
       preload: path.join(__dirname, "../preload/index.cjs"),
       contextIsolation: true,
@@ -31,7 +32,7 @@ function createWindow() {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(__dirname, "../dist-ui/index.html"));
+    mainWindow.loadFile(path.join(__dirname, "../../dist-ui/index.html"));
   }
 
   mainWindow.on("closed", () => {
@@ -41,7 +42,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   // Set Dock icon on macOS for development
-  if (process.platform === "darwin" && app.dock) {
+  if (process.platform === "darwin" && app.dock && !app.isPackaged) {
     app.dock.setIcon(nativeImage.createFromPath(getIconPath()));
   }
 
@@ -233,7 +234,7 @@ ipcMain.handle("git:executeProject", async (_, { projectId, action, message }) =
       result: `Completed git ${action} for ${successCount}/${results.length} repositories in project "${project.name}"`,
     };
   } catch (e: unknown) {
-    throw new Error((e as Error).message);
+    throw new Error((e as Error).message, { cause: e });
   }
 });
 
@@ -279,7 +280,7 @@ ipcMain.handle("git:executeAll", async (_, { action, message }) => {
       result: `Completed git ${action} for ${successCount}/${results.length} repositories across all projects`,
     };
   } catch (e: unknown) {
-    throw new Error((e as Error).message);
+    throw new Error((e as Error).message, { cause: e });
   }
 });
 
@@ -307,7 +308,7 @@ ipcMain.handle("git:getStatus", async (_, repoPath) => {
 // IPC HANDLERS - SYSTEM
 // ==========================================
 
-ipcMain.handle("system:selectDirectory", async (event) => {
+ipcMain.handle("system:selectDirectory", async () => {
   if (!mainWindow) return null;
 
   const result = await dialog.showOpenDialog(mainWindow, {

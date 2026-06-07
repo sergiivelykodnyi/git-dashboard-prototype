@@ -7,7 +7,8 @@
   "scripts": {
     "design": "npx browser-sync design -w --port 4000 --no-ui --host design.git-dashboard.localhost --no-open --no-inject-changes",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "clean": "rm -rf dist-electron dist-ui",
+    "build": "npm run clean && tsc -b && vite build",
     "eslint": "eslint . --fix",
     "stylelint": "stylelint ui/**/*.css --fix",
     "lint": "npm run eslint && npm run stylelint",
@@ -19,29 +20,18 @@
     "upgrade": "npx npm-check-updates --interactive --format group"
   },
   "dependencies": {
-    "@headlessui/react": "2.2.10",
-    "@tailwindcss/vite": "4.3.0",
-    "axios": "1.16.0",
-    "clsx": "2.1.1",
-    "cors": "2.8.6",
-    "express": "5.2.1",
-    "mobx": "6.15.4",
-    "mobx-react-lite": "^4.1.1",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "react-router-dom": "7.15.1",
-    "simple-git": "3.36.0",
-    "tailwindcss": "4.3.0"
+    "simple-git": "3.36.0"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "@types/cors": "2.8.19",
-    "@types/express": "5.0.6",
+    "@headlessui/react": "2.2.10",
+    "@tailwindcss/vite": "4.3.0",
     "@types/node": "25.6.2",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@types/react-router-dom": "5.3.3",
     "@vitejs/plugin-react": "6.0.1",
+    "clsx": "2.1.1",
     "concurrently": "9.2.1",
     "electron": "^42.3.0",
     "electron-builder": "^26.12.1",
@@ -49,14 +39,20 @@
     "eslint-plugin-react-hooks": "7.1.1",
     "eslint-plugin-react-refresh": "0.5.2",
     "globals": "17.6.0",
+    "mobx": "6.15.4",
+    "mobx-react-lite": "^4.1.1",
     "prettier": "3.8.3",
     "prettier-plugin-tailwindcss": "0.8.0",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-router-dom": "7.15.1",
     "stylelint": "17.12.0",
     "stylelint-config-clean-order": "10.0.0",
     "stylelint-config-css-modules": "4.6.0",
     "stylelint-config-standard": "40.0.0",
     "stylelint-config-tailwindcss": "1.0.1",
     "stylelint-order": "8.1.1",
+    "tailwindcss": "4.3.0",
     "tsx": "4.21.0",
     "typescript": "6.0.3",
     "typescript-eslint": "8.59.2",
@@ -68,7 +64,8 @@
   "allowScripts": {
     "esbuild@0.27.7": true,
     "fsevents@2.3.3": true,
-    "electron": true
+    "electron": true,
+    "electron-winstaller@5.4.0": true
   },
   "build": {
     "appId": "com.gitdashboard.app",
@@ -84,7 +81,7 @@
     "mac": {
       "target": "dmg",
       "category": "public.app-category.developer-tools",
-      "icon": "public/icons/icon.png"
+      "icon": "public/icons/icon.icns"
     }
   }
 }
