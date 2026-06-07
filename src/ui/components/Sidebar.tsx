@@ -1,10 +1,12 @@
 import { type ComponentProps } from "react";
-import clsx from "clsx";
+import { observer } from "mobx-react-lite";
 import { NavLink } from "react-router-dom";
+import clsx from "clsx";
 import { Icon } from "@ui/components/Icon";
 import { ButtonIcon } from "@ui/components/ButtonIcon";
+import { Logo } from "@ui/components/Logo";
+
 import { useServices } from "@ui/hooks/useServices";
-import { observer } from "mobx-react-lite";
 
 export const Sidebar = observer(function Sidebar(props: ComponentProps<"aside">) {
   const { className, ...rest } = props;
@@ -21,12 +23,7 @@ export const Sidebar = observer(function Sidebar(props: ComponentProps<"aside">)
       className={clsx("border-r border-surface0 bg-crust", className)}
       {...rest}
     >
-      <div className="flex h-20 items-center gap-3 px-6 font-semibold text-mauve uppercase">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-mauve/15 text-mauve">
-          <Icon name="fork_right" size={24} />
-        </div>
-        git dashboard
-      </div>
+      <Logo />
       <div className="space-y-2 p-4">
         <NavLink to="/" className={linkClass}>
           <Icon name="stacks" size={24} />

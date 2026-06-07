@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  height: 80px;
+  padding-right: 24px;
+  padding-left: 24px;
+
+  font-weight: 600;
+  color: var(--color-mauve);
+  text-transform: uppercase;
+}
+
+.icon-container {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+
+  color: var(--color-mauve);
+
+  background-color: color-mix(in sRGB, var(--color-mauve) 15%, transparent);
+}
